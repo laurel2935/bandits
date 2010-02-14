@@ -27,4 +27,6 @@ public abstract class Domain {
      * @return A random element of this domain.
      */
     public abstract DomainElement randomElement();
+    
+    public abstract CoveringOracle getCoveringOracle();
 }
