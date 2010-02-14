@@ -57,5 +57,12 @@ public abstract class Bandit {
         return this.reward_max;
     }
     
+    /*
+     * Gets the domain.
+     * @return The domain of this bandit problem.
+     */
+    public Domain getDomain() {
+        return this.domain;
+    }
 
 }
