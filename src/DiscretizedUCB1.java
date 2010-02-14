@@ -1,23 +1,14 @@
-
-import java.util.Random;
-import java.lang.Math;
-import java.lang.Double;
-
 /*
- * Implements the UCB1 algorithm on the real line after discretizing the domain.
+ * Implements the UCB1 algorithm after discretizing the domain.
  */
-public class DiscretizedUCB1 {
-
-    // The domain of the reward function is [domain_min, domain_max]  
-    private double domain_min;
-    private double domain_max;
+public class DiscretizedUCB1 extends Algorithm {
 
     // Number of arms
     private int num_arms;
-    
+
     // Input value of each arm
-    private double[] vals;
-    
+    private DomainElement[] vals;
+
     // Times each arm has been played
     private int[] times_played;
     
@@ -27,46 +18,36 @@ public class DiscretizedUCB1 {
     // Total number of plays made so far
     private int total_plays;
     
-    // The problem we're solving
-    private RealBandit problem;
-    
-    // Cumulative regret
-    private double total_regret;
-    
+    // Current arm in action.
+    private int current_arm;
 
     /*
      * Constructor.
-     * @param domain_min Minimum of the domain.
-     * @param domain_max Maximum of the domain.
-     * @param num_arms How many arms to use.
+     * @param domain The domain this algorithm will be working over.
+     * @param num_arms The number of arms to use.
      */
-    public DiscretizedUCB1(RealBandit problem, int num_arms) {
+    public DiscretizedUCB1(Domain domain, int num_arms) {
         // Initialize some values
-        this.domain_min = problem.getDomainMin();
-        this.domain_max = problem.getDomainMax();
-        this.problem = problem;
+        this.domain = domain;
         this.num_arms = num_arms;
-        this.vals = new double[this.num_arms];
+        this.vals = new DomainElement[this.num_arms];
         this.times_played = new int[this.num_arms];
         this.arm_sums = new double[this.num_arms];
         this.total_plays = 0;
-        this.total_regret = 0;
+        this.current_arm = -1;
         
-        Random rand = new Random();
-        // Initialize array values
+        // Discretize domain.
         for (int i = 0; i < this.num_arms; i++) {
-            this.vals[i] = rand.nextDouble() *
-                (this.domain_max - this.domain_min) + this.domain_min;
+            this.vals[i] = this.domain.randomElement();
             this.arm_sums[i] = 0;
             this.times_played[i] = 0;
         }
     }
 
-
-    /*
-     * Makes a move.
-     */
-    public void makeMove() {
+    
+    
+    @Override
+    public DomainElement makeChoice() {
         int arm_choice = -1;
         
         // Check if we're still in the initial stage.
@@ -88,28 +69,18 @@ public class DiscretizedUCB1 {
             }
         }
         
-        // Now we have the arm to use, so make the move.
-        double choice = this.vals[arm_choice];
-        this.times_played[arm_choice]++;
-        double reward = this.problem.getReward(choice);
-        this.arm_sums[arm_choice] += reward;
-        this.total_regret += this.problem.getRegret(choice);
-        this.total_plays++;
+        // Now we have the arm to use, so make the choice.
+        this.current_arm = arm_choice;
+        DomainElement choice = this.vals[arm_choice];
+        return choice;
     }
 
-    /*
-     * Gets the total regret so far.
-     * @return The total regret so far.
-     */
-    public double getTotalRegret() {
-       return this.total_regret; 
-    }
     
-    /*
-     * Gets the average regret so far.
-     * @return The average regret so far.
-     */
-    public double getAverageRegret() {
-        return this.total_regret / this.total_plays;
+    @Override
+    public void recieveReward(double reward) {
+        // Merely record the reward and increment counters appropriately. 
+        this.arm_sums[this.current_arm] += reward;
+        this.times_played[this.current_arm]++;
+        this.total_plays++;
     }
 }
