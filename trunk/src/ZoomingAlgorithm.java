@@ -2,15 +2,19 @@ import java.util.ArrayList;
 
 
 public class ZoomingAlgorithm extends Algorithm {
-	
+	private CoveringOracle oracle;
+	public ZoomingAlgorithm(Domain d){
+		domain = d;
+		oracle = domain.getCoveringOracle();
+	}
 	private class Arm{
-		private double identity;
+		private DomainElement identity;
 		private int n = 0;
 		private double r = 0;
-		public Arm(double input){
+		public Arm(DomainElement input){
 			identity = input;
 		}
-		public double getIdentity(){
+		public DomainElement getIdentity(){
 			return identity;
 		}
 		
@@ -37,22 +41,28 @@ public class ZoomingAlgorithm extends Algorithm {
 	}
 	
 	private int iph = 1; //phase i
+	private int round = 1; //round number of the given phase
+	private Arm chosen = null;
 	
 	// The list of active arms, as chosen by the oracle
 	// I'm not yet sure how we're representing our arms
 	private ArrayList<Arm> active;
 	
 	
-	//The current average reward for an active arm
-	private double mt(Arm v){
-		return v.mt();
-	}
-	
-	//??????????????
-	//I think this needs to be able to cover everything with
-	//balls that shrink in radius each round.
-	public ArrayList<Arm> coveringOracle(){
-		return null;
+	// Creates a complete covering given the set of active arms
+	public ArrayList<Arm> getCovering(ArrayList<Arm> list){
+		oracle.clearCovering();
+		for(Arm arm:list)
+			//add arm and radius to oracle
+			oracle.addElement(arm.getIdentity(), arm.rt());
+		DomainElement uncovered = oracle.getUncoveredElement();
+		while(uncovered != null){
+			Arm newArm = new Arm(uncovered);
+			list.add(newArm);
+			oracle.addElement(newArm.getIdentity(), newArm.rt());
+			uncovered = oracle.getUncoveredElement();
+		}
+		return list;
 	}
 	
 	
@@ -60,16 +70,21 @@ public class ZoomingAlgorithm extends Algorithm {
 	private double It(Arm v){
 		return v.mt()+2*v.rt();
 	}
-	public void runPhase(){		
-		for(int r = 0; r<Math.pow(2, iph);r++){
-			runRound();
+
+	@Override
+	public DomainElement makeChoice() {
+		// Determine if the phase has ended
+		if(round > Math.pow(2, iph)){
+			iph ++;
+			round = 1;
 		}
-		iph ++;
-	}
-	private void runRound(){
-		// add active arms if necesssary
-		active = coveringOracle();
-		//Find the highest index arm
+		// Reset active strategies if a new phase has begun
+		if(round == 1)
+			active = new ArrayList<Arm>();
+		
+		// Cover all strategies
+		active = getCovering(active);
+		
 		int maxI = 0;
 		double maxV = It(active.get(0));
 		for(int v = 1; v < active.size(); v++){
@@ -80,18 +95,14 @@ public class ZoomingAlgorithm extends Algorithm {
 			}				
 		}
 		// Play arm of highest index
-		active.get(maxI).play(reward(active.get(maxI).getIdentity()));
-	}
-
-	@Override
-	public DomainElement makeChoice() {
-		// TODO Auto-generated method stub
-		return null;
+		//active.get(maxI).play(reward(active.get(maxI).getIdentity()));
+		chosen = active.get(maxI);
+		return active.get(maxI).getIdentity();
 	}
 
 	@Override
 	public void recieveReward(double reward) {
 		// TODO Auto-generated method stub
-		
+		chosen.play(reward);
 	}
 }

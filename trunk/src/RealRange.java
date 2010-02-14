@@ -33,4 +33,24 @@ public class RealRange extends Domain {
         return new RealNumber(val);
     }
 
+    private class RealRangeCoveringOracle extends CoveringOracle{
+
+		@Override
+		public void addElement(DomainElement input, double radius) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public DomainElement getUncoveredElement() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+    	
+    }
+    
+	@Override
+	public CoveringOracle getCoveringOracle() {
+		return new RealRangeCoveringOracle();
+	}
 }
