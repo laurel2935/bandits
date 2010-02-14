@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 
-public class zoomingBandit extends RealBandit {
+public class ZoomingAlgorithm extends Algorithm {
 	
 	private class Arm{
 		private double identity;
@@ -42,11 +42,6 @@ public class zoomingBandit extends RealBandit {
 	// I'm not yet sure how we're representing our arms
 	private ArrayList<Arm> active;
 	
-	@Override
-	public double reward(double input) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 	
 	//The current average reward for an active arm
 	private double mt(Arm v){
@@ -86,5 +81,17 @@ public class zoomingBandit extends RealBandit {
 		}
 		// Play arm of highest index
 		active.get(maxI).play(reward(active.get(maxI).getIdentity()));
+	}
+
+	@Override
+	public DomainElement makeChoice() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void recieveReward(double reward) {
+		// TODO Auto-generated method stub
+		
 	}
 }
