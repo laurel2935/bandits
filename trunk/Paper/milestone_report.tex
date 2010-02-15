@@ -3,6 +3,8 @@
 %\documentstyle[nips07submit_09,times]{article}
 \usepackage{graphicx}
 
+\usepackage{amssymb}
+
 \title{Insert Title of Paper Here}
 
 
@@ -41,8 +43,38 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ac mattis augue. 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ac mattis augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Morbi ut orci aliquam magna ultrices porttitor vel id enim. Praesent ut pharetra neque. Sed sit amet est at turpis blandit consequat. In sed libero sem. Aliquam erat volutpat. Curabitur ultrices nisi non augue congue volutpat. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Proin vitae felis sem. Pellentesque sit amet felis augue, et faucibus mauris. Duis a felis tellus, eu luctus neque. Suspendisse sed dapibus justo. In dolor mi, suscipit non malesuada eget, laoreet et nunc. Cras vestibulum, ipsum at tincidunt bibendum, arcu elit vehicula sapien, nec suscipit nisi mauris quis sem. Quisque sit amet eros nulla. Nunc viverra mollis scelerisque. Curabitur molestie hendrerit orci et pulvinar. Sed porta ultricies purus, ut molestie ligula dictum eu. Ut eget tellus at elit volutpat tempus. 
 
 \section{Algorithms}
-\subsection{Algorithm 1}
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ac mattis augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Morbi ut orci aliquam magna ultrices porttitor vel id enim. Praesent ut pharetra neque. Sed sit amet est at turpis blandit consequat. In sed libero sem. Aliquam erat volutpat. Curabitur ultrices nisi non augue congue volutpat. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Proin vitae felis sem. Pellentesque sit amet felis augue, et faucibus mauris. Duis a felis tellus, eu luctus neque. Suspendisse sed dapibus justo. In dolor mi, suscipit non malesuada eget, laoreet et nunc. Cras vestibulum, ipsum at tincidunt bibendum, arcu elit vehicula sapien, nec suscipit nisi mauris quis sem. Quisque sit amet eros nulla. Nunc viverra mollis scelerisque. Curabitur molestie hendrerit orci et pulvinar. Sed porta ultricies purus, ut molestie ligula dictum eu. Ut eget tellus at elit volutpat tempus. 
+\subsection{Discretization Algorithms}
+The simplest approach that one can take when tackling an infinite number of
+arms is to merely pick out some finite number of arms and run a standard
+finite-armed bandit algorithm on them.  This raises the following 
+questions:
+\begin{itemize}
+\item How many arms should be chosen?
+\item How should the arms be chosen?
+\end{itemize}
+The answer to the first question is algorithm- and problem-specific.  For
+example, consider the case where the reward function $r(x) = x$ defined
+on the interval $[0,1]$.  With no noise, the $\epsilon$-greedy strategy
+will converge to the correct arm immediately after sampling each arm once,
+and thus it is beneficial to choose a very large number of arms.  A
+UCB1 or Exp3 strategy, though, will take significantly longer to
+converge, so if convergence time is an issue, perhaps fewer arms should be
+chosen at the expense of some accuracy.
+
+Concerning how the arms themselves are chosen, two obvious strategies are
+to either choose them randomly or to choose them in a grid (at regular
+intervals in the 1D case).  Choosing the arms in a deterministic way
+means that, for a fixed number of arms, we can construct a reward function
+that makes the algorithm behave terribly.  Even given an arbitrary number
+of arms, by choosing a reward function with a maximum near an endpoint of
+an interval in $\mathbb{R}$, for example, we can ensure that the algorithm
+would never do too well.  For these reasons, we opt to go with a random
+choice of arms.
+
+In any case, merely discretizing the domain into a finite number of arms
+inctroduces a bias, as our effective hypothesis class (each of the arms)
+probably no longer contains the optimal hypothesis.
+
 
 \begin{figure}
  \centering
@@ -53,7 +85,10 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ac mattis augue. 
 \end{figure}
 
 
-\subsection{Algorithm 2}
+\subsection{Zooming Algorithm}
+Some very informative text
+
+\subsection{Hierarchical Optimistic Optimization}
 Some very informative text
 
 \section{Artificial data decription}
