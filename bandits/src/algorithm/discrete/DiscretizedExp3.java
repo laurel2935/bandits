@@ -1,5 +1,12 @@
+package algorithm.discrete;
+
 import java.lang.Math;
 import java.util.Random;
+
+import domain.Domain;
+import domain.DomainElement;
+
+import algorithm.Algorithm;
 
 /*
  * Implements the Exp3 algorithm after discretizing the domain.

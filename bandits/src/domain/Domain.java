@@ -1,4 +1,7 @@
+package domain;
+
 import java.util.Random;
+
 
 /*
  * Represents the domain over which a problem can be over.

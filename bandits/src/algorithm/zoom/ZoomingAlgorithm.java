@@ -1,4 +1,11 @@
+package algorithm.zoom;
 import java.util.ArrayList;
+
+import domain.CoveringOracle;
+import domain.Domain;
+import domain.DomainElement;
+
+import algorithm.Algorithm;
 
 
 public class ZoomingAlgorithm extends Algorithm {

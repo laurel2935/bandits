@@ -1,3 +1,7 @@
+package bandit;
+import domain.Domain;
+import domain.DomainElement;
+
 
 /*
  * Represents a bandit problem, abstractly.

@@ -1,3 +1,4 @@
+package domain;
 
 public class Link<T> {
 	private Link<T> prev;

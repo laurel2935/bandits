@@ -8,7 +8,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import xArm.XArm;
+import algorithm.xArm.XArm;
+
 
 public class XArmTest {
 

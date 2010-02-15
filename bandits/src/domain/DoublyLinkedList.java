@@ -1,3 +1,5 @@
+package domain;
+
 
 public class DoublyLinkedList<T> {
 	private Link<T> first;

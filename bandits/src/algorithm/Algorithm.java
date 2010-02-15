@@ -1,3 +1,7 @@
+package algorithm;
+import domain.Domain;
+import domain.DomainElement;
+
 /*
  * Represents an Algorithm, abstractly.
  */

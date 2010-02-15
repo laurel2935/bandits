@@ -1,3 +1,10 @@
+package bandit;
+import algorithm.RealBandit;
+import domain.Domain;
+import domain.DomainElement;
+import domain.RealNumber;
+import domain.RealRange;
+
 
 /*
  * Gives a reward function that is the composition of two input reward functions

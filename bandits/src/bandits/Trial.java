@@ -1,5 +1,12 @@
+package bandits;
 import java.io.FileWriter;
 import java.io.IOException;
+
+import domain.DomainElement;
+
+import bandit.Bandit;
+
+import algorithm.Algorithm;
 
 /*
  * Represents a trial - i.e. an algorithm running on a problem.

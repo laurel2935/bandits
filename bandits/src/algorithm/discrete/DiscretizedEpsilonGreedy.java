@@ -1,7 +1,21 @@
+package algorithm.discrete;
+
+import java.util.Random;
+import java.lang.Math;
+
+import domain.Domain;
+import domain.DomainElement;
+
+import algorithm.Algorithm;
+
 /*
- * Implements the UCB1 algorithm after discretizing the domain.
+ * Implements the epsilon-greedy algorithm after discretizing the domain.
+ * The epsilon-greedy strategy is implemented as follows:  If we're still in the
+ * first n rounds, where n is the number of arms, play the nth arm.  Otherwise,
+ * with probability epsilon (decreasing with the number of rounds played), play
+ * a random arm, and the best arm on average the rest of the time.
  */
-public class DiscretizedUCB1 extends Algorithm {
+public class DiscretizedEpsilonGreedy extends Algorithm {
 
     // Number of arms
     private int num_arms;
@@ -20,13 +34,16 @@ public class DiscretizedUCB1 extends Algorithm {
     
     // Current arm in action.
     private int current_arm;
+    
+    // Random number generator
+    private Random rand;
 
     /*
      * Constructor.
      * @param domain The domain this algorithm will be working over.
      * @param num_arms The number of arms to use.
      */
-    public DiscretizedUCB1(Domain domain, int num_arms) {
+    public DiscretizedEpsilonGreedy(Domain domain, int num_arms) {
         // Initialize some values
         this.domain = domain;
         this.num_arms = num_arms;
@@ -35,6 +52,7 @@ public class DiscretizedUCB1 extends Algorithm {
         this.arm_sums = new double[this.num_arms];
         this.total_plays = 0;
         this.current_arm = -1;
+        this.rand = new Random();
         
         // Discretize domain.
         for (int i = 0; i < this.num_arms; i++) {
@@ -55,16 +73,23 @@ public class DiscretizedUCB1 extends Algorithm {
             arm_choice = this.total_plays;
         }
 
-        // Otherwise, figure out the best arm to use
+        // Otherwise, figure out the best arm to use or play randomly.
         else {
-            double best_val = Double.NEGATIVE_INFINITY;
-            for (int i = 0; i < this.num_arms; i++) {
-                double average = this.arm_sums[i] / this.times_played[i];
-                double val = average + Math.sqrt(2 * Math.log(this.total_plays)
-                        / this.times_played[i]);
-                if (val > best_val) {
-                    arm_choice = i;
-                    best_val = val;
+            double p = rand.nextDouble();
+            // epsilon = num_arms / total_plays
+            if (p < Math.min(1, (double) this.num_arms / this.total_plays)) {
+                // Random choice
+                arm_choice = rand.nextInt(this.num_arms);                
+            }
+            else {
+                // Play best arm
+                double best_val = Double.NEGATIVE_INFINITY;
+                for (int i = 0; i < this.num_arms; i++) {
+                    double val = this.arm_sums[i] / this.times_played[i];
+                    if (val > best_val) {
+                        arm_choice = i;
+                        best_val = val;
+                    }
                 }
             }
         }
