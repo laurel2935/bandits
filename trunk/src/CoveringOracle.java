@@ -5,15 +5,18 @@
 public abstract class CoveringOracle {
 
     /*
-     * @param input An element which we want to see is in this domain.
-     * @return True if the input is in this domain, False otherwise.
+     * @param input The center of the sphere we are covering
+     * @param radius The radius of the sphere we are adding
+     * Adds the sphere to our covering.
      */
     public abstract void addElement(DomainElement input, double radius);
     
+    /*
+     * @return An uncovered DomainElement
+     */
     public abstract DomainElement getUncoveredElement();
     /*
-     * Returns a 'random' element of this domain.
-     * @return A random element of this domain.
+     * Clears the covering.
      */
     public abstract void clearCovering();
     

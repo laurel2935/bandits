@@ -51,8 +51,6 @@ public class DoublyLinkedList<T> {
 	// removes the current element and moves current to the
 	// previous link, or the first if there is no previous.
 	public void removeCurrent(){
-		System.out.println("removing current");
-		System.out.println(current);
 		if(current.getNext() != null)
 			current.getNext().setPrev(current.getPrev());
 		else
@@ -64,7 +62,6 @@ public class DoublyLinkedList<T> {
 			first = current.getNext();
 			current = first;
 		}
-		System.out.println(current);
 	}
 	
 	// inserts a new value after current.
@@ -78,6 +75,32 @@ public class DoublyLinkedList<T> {
 				current.getNext().setPrev(addMe);
 			current.setNext(addMe);
 			addMe.setPrev(current);
+		}
+	}
+	
+	// inserts a new value before current.
+	public void insertBeforeCurrent(T value){
+		Link<T> addMe = new Link<T>(value);
+		// If current is null, add to the beginning
+		if(current == null){
+			Link<T> second = first;
+			first = addMe;
+			first.setNext(second);
+			if(second != null){
+				second.setPrev(first);
+			}		
+		}else{
+			// Current is not null
+			addMe.setNext(current);
+			addMe.setPrev(current.getPrev());			
+			if(current.getPrev()!=null){
+				// current is not first
+				current.getPrev().setNext(addMe);				
+			}else{
+				// current was first
+				first = addMe;				
+			}
+			current.setPrev(addMe);
 		}
 	}
 	
