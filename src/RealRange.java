@@ -34,19 +34,106 @@ public class RealRange extends Domain {
     }
 
     private class RealRangeCoveringOracle extends CoveringOracle{
-
+    	
+    	// Used to indicate covered regions
+    	private class Range{
+    		
+    		public double start;
+    		public double end;
+    		
+    		public Range(double s, double e) {
+				start = s;
+				end = e;
+			}
+    		
+    		public boolean contains(double v){
+    			return (start<=v) && (v<=end);
+    		}
+    		
+    		public String toString(){
+    			return "("+start+", " + end + ")\n";
+    		}
+    	}
+    	
+    	
+    	DoublyLinkedList<Range> coveredRegion;
+    	public RealRangeCoveringOracle(){
+    		coveredRegion = new DoublyLinkedList<Range>();
+    	}
+    	
 		@Override
 		public void addElement(DomainElement input, double radius) {
-			// TODO Auto-generated method stub
-			
+			if(input instanceof RealNumber){
+				System.out.println("Adding " + ((RealNumber) input).getValue());
+				double center = ((RealNumber) input).getValue();
+				coveredRegion.toFirst();
+				if(coveredRegion.currentIsNull()){
+					coveredRegion.addElement(new Range(center - radius, center + radius));
+				} else {
+					boolean inserted = false;
+					while(!inserted){
+						// If new sphere overlaps with current
+						if(coveredRegion.getCurrentValue().contains(center - radius) || coveredRegion.getCurrentValue().contains(center + radius)){
+							Range oldRange = coveredRegion.getCurrentValue();
+							Range newRange = new Range(Math.min(oldRange.start, center - radius), Math.max(oldRange.end, center + radius));
+							coveredRegion.updateCurrent(newRange);
+							inserted = true;
+							//check overlap with next.
+							if(coveredRegion.next()){
+								if(coveredRegion.getCurrentValue().start < center + radius){
+									double newEnd = coveredRegion.getCurrentValue().end;
+									coveredRegion.removeCurrent();
+									coveredRegion.updateCurrent(new Range(newRange.start,newEnd));
+									inserted = true;
+								}
+							}
+						// if new sphere is before current, add before
+						} else if (coveredRegion.getCurrentValue().start > center + radius){
+							coveredRegion.prev();
+							coveredRegion.insertAtCurrent(new Range(center - radius, center + radius));
+							inserted = true;
+						// If there are no more elements, add on to the end, else increment
+						} else if(!coveredRegion.next()){
+							coveredRegion.addElement(new Range(center - radius, center + radius));
+							inserted = true;
+						}
+					}
+				}
+			}			
+			System.out.println("covered region is now: \n"+coveredRegion);
 		}
 
 		@Override
 		public DomainElement getUncoveredElement() {
-			// TODO Auto-generated method stub
+			coveredRegion.toFirst();
+			if(coveredRegion.currentIsNull()){
+				return new RealNumber((min + max)/2);
+			} else {
+				double lastMax = min;
+				do{
+					if(lastMax < coveredRegion.getCurrentValue().start)
+						return new RealNumber((lastMax+coveredRegion.getCurrentValue().start)/2);
+					lastMax = coveredRegion.getCurrentValue().end;
+				}while (coveredRegion.next());
+			}
 			return null;
 		}
+
+		@Override
+		public void clearCovering() {
+			// TODO Auto-generated method stub
+			coveredRegion = new DoublyLinkedList<Range>();
+		}
     	
+		public String toString(){
+			String output = "";
+			coveredRegion.toFirst();
+			while(!coveredRegion.currentIsNull()){
+				output += coveredRegion.getCurrentValue().toString();
+				coveredRegion.next();
+			}
+			return output+"\n\n";
+		}
     }
     
 	@Override
