@@ -21,5 +21,15 @@ public class RealNumber implements DomainElement {
     public double getValue() {
         return this.value;
     }
-    
+
+	@Override
+	public double distanceTo(DomainElement elem) {
+		if(elem instanceof RealNumber)
+			return Math.abs(((RealNumber) elem).getValue()-this.getValue());
+		else
+			return 0;
+	}    
+	public String toString(){
+		return value+"";
+	}
 }

@@ -97,7 +97,7 @@ public class Trial {
             }
             
             // Test/debug code.
-            if (i % (this.total_rounds / 100) == 0) {
+            if (i % (Math.max(this.total_rounds / 100,1)) == 0) {
                 System.out.println("Average regret after move " + (i + 1) + ": "
                         + average_regret);
             }
