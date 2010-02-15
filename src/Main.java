@@ -12,11 +12,11 @@ public class Main {
 
         // Make algorithm
         int arms = 100;
-        Algorithm test_alg = new DiscretizedUCB1(noise.domain, arms);        
+        Algorithm test_alg = new ZoomingAlgorithm(noise.domain);        
 
         // Run
-        int num_plays = 1000000;
-        Trial test_run = new Trial(test_alg, noise, num_plays, "ucb3comp.txt"); 
+        int num_plays = 10000000;
+        Trial test_run = new Trial(test_alg, noise, num_plays, "zoom.txt"); 
         test_run.setWriteInterval(1000);
         test_run.run();
     }
