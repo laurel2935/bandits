@@ -70,7 +70,7 @@ public class DiscretizedEpsilonGreedy extends Algorithm {
         else {
             double p = rand.nextDouble();
             // epsilon = num_arms / total_plays
-            if (p < Math.min(1, this.num_arms / this.total_plays)) {
+            if (p < Math.min(1, (double) this.num_arms / this.total_plays)) {
                 // Random choice
                 arm_choice = rand.nextInt(this.num_arms);                
             }

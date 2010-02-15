@@ -5,13 +5,13 @@ public class Main {
         double[] coeffs = {0, 1};
         PolynomialRealBandit test_prob = new PolynomialRealBandit(coeffs, 0, 1);
         test_prob.setRewardMax(1);
-        NoisyBandit noisy = new NoisyBandit(test_prob, .2, 1.8);
+        NoisyBandit noisy = new NoisyBandit(test_prob, 1, 1);
         
         int arms = 100;
-        Algorithm test_alg = new DiscretizedEpsilonGreedy(noisy.domain, arms);        
+        Algorithm test_alg = new DiscretizedExp3(noisy.domain, arms);        
         int num_plays = 1000000;
-        Trial test_run = new Trial(test_alg, test_prob, num_plays, "e_greed.txt"); 
-        test_run.setWriteInterval(100);
+        Trial test_run = new Trial(test_alg, test_prob, num_plays, "exp3.txt"); 
+        test_run.setWriteInterval(1000);
         test_run.run();
     }
 
