@@ -55,9 +55,13 @@ public class ZoomingAlgorithm extends Algorithm {
 		for(Arm arm:list)
 			//add arm and radius to oracle
 			oracle.addElement(arm.getIdentity(), arm.rt());
+		/*if(iph>6){
 		System.out.println("The current covering: ");
-		System.out.println(oracle);
+		System.out.println(oracle);}*/
 		DomainElement uncovered = oracle.getUncoveredElement();
+		if(uncovered!=null){
+			System.out.println("New arm at:" + uncovered);
+		}
 		while(uncovered != null){
 			Arm newArm = new Arm(uncovered);
 			list.add(newArm);
@@ -98,7 +102,7 @@ public class ZoomingAlgorithm extends Algorithm {
 		}
 		// Play arm of highest index
 		chosen = active.get(maxI);
-		System.out.println(chosen.getIdentity());
+		//System.out.println("Arm chosen: " + chosen.getIdentity());
 		round++;
 		return chosen.getIdentity();
 	}

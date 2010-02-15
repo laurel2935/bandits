@@ -60,8 +60,8 @@ public class RealRange extends Domain {
     		public double end;
     		
     		public Range(double s, double e) {
-				start = s;
-				end = e;
+				start = Math.max(s,min);
+				end = Math.min(e, max);
 			}
     		
     		public boolean contains(double v){
@@ -82,7 +82,6 @@ public class RealRange extends Domain {
 		@Override
 		public void addElement(DomainElement input, double radius) {
 			if(input instanceof RealNumber){
-				System.out.println("Adding " + ((RealNumber) input).getValue());
 				double center = ((RealNumber) input).getValue();
 				coveredRegion.toFirst();
 				if(coveredRegion.currentIsNull()){
@@ -107,8 +106,7 @@ public class RealRange extends Domain {
 							}
 						// if new sphere is before current, add before
 						} else if (coveredRegion.getCurrentValue().start > center + radius){
-							coveredRegion.prev();
-							coveredRegion.insertAtCurrent(new Range(center - radius, center + radius));
+							coveredRegion.insertBeforeCurrent(new Range(center - radius, center + radius));
 							inserted = true;
 						// If there are no more elements, add on to the end, else increment
 						} else if(!coveredRegion.next()){
@@ -118,7 +116,6 @@ public class RealRange extends Domain {
 					}
 				}
 			}			
-			System.out.println("covered region is now: \n"+coveredRegion);
 		}
 
 		@Override
@@ -133,6 +130,9 @@ public class RealRange extends Domain {
 						return new RealNumber((lastMax+coveredRegion.getCurrentValue().start)/2);
 					lastMax = coveredRegion.getCurrentValue().end;
 				}while (coveredRegion.next());
+				if(lastMax < max){
+					return new RealNumber((max+lastMax)/2);
+				}
 			}
 			return null;
 		}
