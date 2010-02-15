@@ -27,6 +27,24 @@ public class RealRange extends Domain {
                this.max >= ((RealNumber)input).getValue();
     }
     
+    
+    /*
+     * Gets the min value in this range.
+     * @return The minimal value of this range.
+     */
+    public double getMin() {
+        return this.min;
+    }
+    
+    /*
+     * Gets the max value in this range.
+     * @return The maximal value of this range.
+     */
+    public double getMax() {
+        return this.max;
+    }
+    
+    
     public RealNumber randomElement() {
         // Just get a random number in the range.
         double val = this.rand.nextDouble() * (this.max - this.min) + this.min;
