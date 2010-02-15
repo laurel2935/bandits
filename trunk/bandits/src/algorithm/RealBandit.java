@@ -1,3 +1,8 @@
+package algorithm;
+import domain.DomainElement;
+import domain.RealRange;
+import bandit.Bandit;
+
 
 public abstract class RealBandit extends Bandit {
 

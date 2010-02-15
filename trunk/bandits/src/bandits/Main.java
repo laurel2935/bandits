@@ -1,3 +1,11 @@
+package bandits;
+import bandit.BinomialBandit;
+import bandit.ComposedRealBandit;
+import bandit.NoisyBandit;
+import bandit.PolynomialRealBandit;
+import algorithm.*;
+import algorithm.discrete.*;
+
 public class Main {
 
     // Just testing stuff out for now.
@@ -12,11 +20,11 @@ public class Main {
 
         // Make algorithm
         int arms = 100;
-        Algorithm test_alg = new ZoomingAlgorithm(noise.domain);        
+        Algorithm test_alg = new DiscretizedUCB1(noise.domain, arms);        
 
         // Run
-        int num_plays = 10000000;
-        Trial test_run = new Trial(test_alg, noise, num_plays, "zoom.txt"); 
+        int num_plays = 1000000;
+        Trial test_run = new Trial(test_alg, noise, num_plays, "ucb1.txt"); 
         test_run.setWriteInterval(1000);
         test_run.run();
     }

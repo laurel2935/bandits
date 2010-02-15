@@ -1,5 +1,9 @@
+package bandit;
 
 import java.util.Random;
+
+import domain.DomainElement;
+
 
 /*
  * Represents a bandit problem with a noisy reward function.

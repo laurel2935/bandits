@@ -8,7 +8,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import xArm.CubicCoverNode;
+import algorithm.xArm.CubicCoverNode;
+
 
 public class CubicCoverNodeTest {
 	

@@ -6,8 +6,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import xArm.CubicCoverNode;
-import xArm.CubicCoverTree;
+import algorithm.xArm.CubicCoverNode;
+import algorithm.xArm.CubicCoverTree;
+
 
 public class CubicCoverTreeTest {
 	// for comparing doubles

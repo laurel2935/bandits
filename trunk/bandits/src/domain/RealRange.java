@@ -1,3 +1,5 @@
+package domain;
+
 /*
  * Represents a range of real numbers.
  */
