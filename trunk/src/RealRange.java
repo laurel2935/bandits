@@ -60,8 +60,8 @@ public class RealRange extends Domain {
     		public double end;
     		
     		public Range(double s, double e) {
-				start = Math.max(s,min);
-				end = Math.min(e, max);
+				start = Math.max(s,min-.00001);
+				end = Math.min(e, max+.00001);
 			}
     		
     		public boolean contains(double v){
@@ -88,9 +88,14 @@ public class RealRange extends Domain {
 					coveredRegion.addElement(new Range(center - radius, center + radius));
 				} else {
 					boolean inserted = false;
+					int c = 0;
 					while(!inserted){
+						c++;
+						if(c%100000==0)
+							System.out.print(".");
 						// If new sphere overlaps with current
-						if(coveredRegion.getCurrentValue().contains(center - radius) || coveredRegion.getCurrentValue().contains(center + radius)){
+						if(coveredRegion.getCurrentValue().start <= center + radius
+								&& coveredRegion.getCurrentValue().end >= center - radius){
 							Range oldRange = coveredRegion.getCurrentValue();
 							Range newRange = new Range(Math.min(oldRange.start, center - radius), Math.max(oldRange.end, center + radius));
 							coveredRegion.updateCurrent(newRange);
@@ -105,14 +110,16 @@ public class RealRange extends Domain {
 								}
 							}
 						// if new sphere is before current, add before
-						} else if (coveredRegion.getCurrentValue().start > center + radius){
-							coveredRegion.insertBeforeCurrent(new Range(center - radius, center + radius));
-							inserted = true;
-						// If there are no more elements, add on to the end, else increment
-						} else if(!coveredRegion.next()){
-							coveredRegion.addElement(new Range(center - radius, center + radius));
-							inserted = true;
-						}
+						} else {
+							if (coveredRegion.getCurrentValue().start > center + radius){						
+								coveredRegion.insertBeforeCurrent(new Range(center - radius, center + radius));
+								inserted = true;
+							// If there are no more elements, add on to the end, else increment
+							} else if(!coveredRegion.next()){
+								coveredRegion.addElement(new Range(center - radius, center + radius));
+								inserted = true;
+							}
+						}						
 					}
 				}
 			}			
@@ -139,7 +146,6 @@ public class RealRange extends Domain {
 
 		@Override
 		public void clearCovering() {
-			// TODO Auto-generated method stub
 			coveredRegion = new DoublyLinkedList<Range>();
 		}
     	
