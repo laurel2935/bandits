@@ -20,11 +20,11 @@ public class Main {
 
         // Make algorithm
         int arms = 100;
-        Algorithm test_alg = new DiscretizedEpsilonGreedy(noise.domain, arms);
+        Algorithm test_alg = new RandomAlgorithm(noise.domain);
 
         // Run
         int num_plays = 1000000;
-        Trial test_run = new Trial(test_alg, noise, num_plays, "e_greed.txt"); 
+        Trial test_run = new Trial(test_alg, noise, num_plays, "e_greed1.txt"); 
         test_run.setWriteInterval(1000);
         test_run.run();
     }
