@@ -129,6 +129,7 @@ The Zooming Algorithm is composed of multiple phases, each of which is composed 
 
 A point of concern to us with this algorithm is that it does not seem to remember anything from previous phases when a new phase starts. The only piece of information it maintains is the phase number, which influeces the confidence radius and index, which changes the balance between exploration and exploitation. It seems like it may be better to start on a later phase, given knowledge of the specific problem. Additionally, the \emph{covering oracle} becomes very complicated once you move into more advanced spaces.
 
+Additionaly, we have run into some issues under more complicated bandit problems. When there are multiple peaks, the algorithm seems to have trouble converging. This may be due to a bug in our code, or some parameter that needs to be tuned in the algorithm.
 \subsection{Hierarchical Optimistic Optimization}
 Some very informative text
 
