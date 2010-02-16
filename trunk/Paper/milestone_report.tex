@@ -5,7 +5,7 @@
 
 \usepackage{amssymb}
 
-\title{Insert Title of Paper Here}
+\title{Infinitely-Armed Bandit Algorithms}
 
 
 \author{
@@ -36,11 +36,29 @@ Daniel Rosenberg \\
 \maketitle
 
 \begin{abstract}
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ac mattis augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Morbi ut orci aliquam magna ultrices porttitor vel id enim. Praesent ut pharetra neque. Sed sit amet est at turpis blandit consequat. In sed libero sem. Aliquam erat volutpat. Curabitur ultrices nisi non augue congue volutpat. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Proin vitae felis sem. Pellentesque sit amet felis augue, et faucibus mauris. Duis a felis tellus, eu luctus neque. Suspendisse sed dapibus justo. In dolor mi, suscipit non malesuada eget, laoreet et nunc. Cras vestibulum, ipsum at tincidunt bibendum, arcu elit vehicula sapien, nec suscipit nisi mauris quis sem. Quisque sit amet eros nulla. Nunc viverra mollis scelerisque. Curabitur molestie hendrerit orci et pulvinar. Sed porta ultricies purus, ut molestie ligula dictum eu. Ut eget tellus at elit volutpat tempus. 
+We have been considering a variation on the standard K-armed bandit 
+problem where the number of arms is infinite.  Here we present
+our progress and plans for the future.
 \end{abstract}
 
 \section{Background}
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ac mattis augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Morbi ut orci aliquam magna ultrices porttitor vel id enim. Praesent ut pharetra neque. Sed sit amet est at turpis blandit consequat. In sed libero sem. Aliquam erat volutpat. Curabitur ultrices nisi non augue congue volutpat. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Proin vitae felis sem. Pellentesque sit amet felis augue, et faucibus mauris. Duis a felis tellus, eu luctus neque. Suspendisse sed dapibus justo. In dolor mi, suscipit non malesuada eget, laoreet et nunc. Cras vestibulum, ipsum at tincidunt bibendum, arcu elit vehicula sapien, nec suscipit nisi mauris quis sem. Quisque sit amet eros nulla. Nunc viverra mollis scelerisque. Curabitur molestie hendrerit orci et pulvinar. Sed porta ultricies purus, ut molestie ligula dictum eu. Ut eget tellus at elit volutpat tempus. 
+In many situations, the number of arms on a K-armed bandit is actually
+very large.  For example, in the case of choosing an ordering of $N$ ads,
+the number of possible arms to pull is actually $N!$, which is far too
+large for any standard finite-armed bandit algorithm to handle.
+Generalizing, it may be the case that the number of arms on a bandit is
+actually infinite.  Examples of this include optimizing parameters of
+some algorithm or classifier and maximizing a noisy function over a domain
+containing an infinite number of points, such as a unit hypercube.
+
+The algorithms designed to handle an infinite-armed bandit can be
+partitioned into those algorithms which merely discretize the domain
+into a finite number of points, and those which actually take into
+consideration every point.  One natural question to ask is: are these
+infinite-armed bandit algorithms worth it, or is it more advantageous
+to stick with a discretization of the domain into a finite number of
+points and run a standard finite-armed bandit algorithm on them?
+
 
 \section{Algorithms}
 \subsection{Discretization Algorithms}
@@ -59,7 +77,10 @@ will converge to the correct arm immediately after sampling each arm once,
 and thus it is beneficial to choose a very large number of arms.  A
 UCB1 or Exp3 strategy, though, will take significantly longer to
 converge, so if convergence time is an issue, perhaps fewer arms should be
-chosen at the expense of some accuracy.
+chosen at the expense of some accuracy.  On the other hand, for a
+needle-in-a-haystack type of reward function, we clearly want to
+include more arms so that we have a better chance of achieving the
+optimal value.
 
 Concerning how the arms themselves are chosen, two obvious strategies are
 to either choose them randomly or to choose them in a grid (at regular
@@ -95,11 +116,21 @@ A point of concern to us with this algorithm is that it does not seem to remembe
 \subsection{Hierarchical Optimistic Optimization}
 Some very informative text
 
-\section{Artificial Data Decription}
-Real data? who needs it?
+\section{Artificial Data Description}
+For now, we have just been testing the algorithms on reward functions from
+$\mathbb{R}$ to $\mathbb{R}$.  We currently have support for polynomials
+of arbitrary degree, binomial functions, composing two arbitrary functions,
+and adding noise in the form of multiplying the unbiased result by a random
+number in a given range.
 \\
 \section{Possible Applications}
-Apparently us.
+One issue with bandit algorithms is that there are relatively few
+situations where a pure bandit algorithm is applicable.  Rather, is it
+typically the case that there is some side information (e.g. a search term)
+that can be used in determining which arm to choose.  In that case, this
+turns into a contextual bandit problem, which the algorithms we have
+implemented are not suited for.  It might be possible to adapt these
+algorithms for the contextual bandit problem.
 \\
 \section{Conclusion}
 In conclusion, we did some stuff, and will do more.
