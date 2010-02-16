@@ -4,7 +4,8 @@ See the docstring for 'gplotter.py'
 '''
 
 
-import gplotter, sys
+import gplotter
+import sys
 
 # Parse command line arguments in a shoddy way
 usage = 'Usage: python plot.py input_filename [output_filename] [title]'
