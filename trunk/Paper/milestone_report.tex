@@ -86,12 +86,16 @@ probably no longer contains the optimal hypothesis.
 
 
 \subsection{Zooming Algorithm}
-Some very informative text
+If you actually want to consider the infinite number of arms, you need to have certain information about the relationship between them. For instance, arms that are \emph{close} should produce similar results. The Zooming Algorithm is defined to work in any example where the arms form a metric space. In each phase, certain arms are chosen to be \emph{active}, and the algorithm chooses which arm to play from these active arms.
+
+The Zooming Algorithm is composed of multiple phases, each of which is composed of $2^{i_{ph}}$ rounds, where $i_{ph}$ is the current phase number. In a given round, you \emph{activate} an arm if that arm is not covered by another arm. Each arm covers a radius defined by $r_t(v):=\sqrt{8*i_{ph}/(2+n_t(v)))}$ where $v$ is the active arm, and $n_t(v)$ is the number of times a given arm has been chosen at time $t$. Each time an arm is played, its radius shrinks, and at the beginning of each round, you \emph{activate} arms until you have a complete covering using a \emph{covering oracle}. This oracle can either return an uncovered arm, or state that there is no such arm. After the space is covered, you play the arm with the optimal index, defined as $I_t(v):=\mu_t(v)+2*r_t(v)$
+
+A point of concern to us with this algorithm is that it does not seem to remember anything from previous phases when a new phase starts. The only piece of information it maintains is the phase number, which influeces the confidence radius and index, which changes the balance between exploration and exploitation. It seems like it may be better to start on a later phase, given knowledge of the specific problem. Aditionally, the \emph{covering oracle} becomes very complicated once you move into more advanced spaces.
 
 \subsection{Hierarchical Optimistic Optimization}
 Some very informative text
 
-\section{Artificial data decription}
+\section{Artificial Data Decription}
 Real data? who needs it?
 \\
 \section{Possible Applications}
@@ -106,5 +110,5 @@ hgjfjjh
 \section*{References}
 
 
-[1] hkjlh
+[1] Robert Kleinberg, Aleksandrs Slivkins, Eli Upfal, ``Multi-Armed Bandits in Metric Spaces''
 \end{document}
