@@ -59,8 +59,10 @@ infinite-armed bandit algorithms worth it, or is it more advantageous
 to stick with a discretization of the domain into a finite number of
 points and run a standard finite-armed bandit algorithm on them?
 With that in mind, we implemented the following algorithms: discretized
-UCB1, discretized $\epsilon$-greedy, discretized Exp3, Zooming, and
-Hierarchical Optimistic Optimization (HOO).  The latter two of these
+UCB1, discretized $\epsilon$-greedy, discretized Exp3,
+Zooming\cite{Zooming}, and
+Hierarchical Optimistic Optimization (HOO)\cite{xArmed}.
+The latter two of these
 algorithms are designed to work on an infinite-armed bandit, whereas the
 former three all pick a finite number of points in the domain to run on.
 
@@ -109,31 +111,21 @@ would never do too well.  For these reasons, we opt to go with a random
 choice of arms.
 
 In any case, merely discretizing the domain into a finite number of arms
-inctroduces a bias, as our effective hypothesis class (each of the arms)
+introduces a bias, as our effective hypothesis class (each of the arms)
 probably no longer contains the optimal hypothesis.
-
-
-\begin{figure}
- \centering
- \includegraphics[width=240px]{./image.png}
- % image.png: 480x480 pixel, 72dpi, 16.93x16.93 cm, bb=0 0 480 480\
- \caption{Here we see a many armed bandit.}
- \label{manyarms}
-\end{figure}
-
 
 \subsection{Zooming Algorithm}
 If you actually want to consider the infinite number of arms, you need to have certain information about the relationship between them. For instance, arms that are \emph{close} should produce similar results. The Zooming Algorithm is defined to work in any example where the arms form a metric space. In each phase, certain arms are chosen to be \emph{active}, and the algorithm chooses which arm to play from these active arms.
 
 The Zooming Algorithm is composed of multiple phases, each of which is composed of $2^{i_{ph}}$ rounds, where $i_{ph}$ is the current phase number. In a given round, you \emph{activate} an arm if that arm is not covered by another arm. Each arm covers a radius defined by $r_t(v):=\sqrt{8*i_{ph}/(2+n_t(v)))}$ where $v$ is the active arm, and $n_t(v)$ is the number of times a given arm has been chosen at time $t$. Each time an arm is played, its radius shrinks, and at the beginning of each round, you \emph{activate} arms until you have a complete covering using a \emph{covering oracle}. This oracle can either return an uncovered arm, or state that there is no such arm. After the space is covered, you play the arm with the optimal index, defined as $I_t(v):=\mu_t(v)+2*r_t(v)$
 
-A point of concern to us with this algorithm is that it does not seem to remember anything from previous phases when a new phase starts. The only piece of information it maintains is the phase number, which influeces the confidence radius and index, which changes the balance between exploration and exploitation. It seems like it may be better to start on a later phase, given knowledge of the specific problem. Additionally, the \emph{covering oracle} becomes very complicated once you move into more advanced spaces.
+A point of concern to us with this algorithm is that it does not seem to remember anything from previous phases when a new phase starts. The only piece of information it maintains is the phase number, which influences the confidence radius and index, which changes the balance between exploration and exploitation. It seems like it may be better to start on a later phase, given knowledge of the specific problem. Additionally, the \emph{covering oracle} becomes very complicated once you move into more advanced spaces.
 
-Additionaly, we have run into some issues under more complicated bandit problems. When there are multiple peaks, the algorithm seems to have trouble converging. This may be due to a bug in our code, or some parameter that needs to be tuned in the algorithm.
+Additionally, we have run into some issues under more complicated bandit problems. When there are multiple peaks, the algorithm seems to have trouble converging. This may be due to a bug in our code, or some parameter that needs to be tuned in the algorithm.
 \subsection{Hierarchical Optimistic Optimization}
 Some very informative text
 
-\section{Artificial Data Description}
+\section{Artificial Data}
 For now, we have just been testing the algorithms on reward functions from
 $[0,1]$ to $\mathbb{R}$.  We currently have support for polynomials
 of arbitrary degree, binomial functions, composing two arbitrary functions,
@@ -187,10 +179,62 @@ algorithms, or implement more algorithms from more papers.  At this
 point, we have not decided for sure which of these options we would like
 to pursue, which is also dependent on how much time they take up.
 
+\section{Plots}
+The following plots were based on the reward function
+$R(x) = noise(bin(3x^2 -3x + 1), .5, 1)$, where $noise(f(x), a, b)$
+multiplies each value received from f(x) by some number chosen uniformly
+at random between $a$ and $b$, and $bin(f(x))$ is 1 with probability
+f(x) and 0 otherwise.  Our implementation of the $\epsilon$-greedy 
+algorithm samples each arm once at first, then proceeds with
+$\epsilon$ = $\frac{arms}{rounds}$.  The Exp3 algorithm uses
+$\gamma = \frac{arms}{rounds + 1}$.  In each discretization case, 100
+arms were used.
 
 
-\section*{References}
+\begin{figure}[ht]
+ \begin{minipage}[b]{.5\linewidth}
+ \centering
+ \includegraphics[width=230px]{./e_greed.png}
+ % image.png: 480x480 pixel, 72dpi, 16.93x16.93 cm, bb=0 0 480 480\
+ \caption{Epsilon Greedy}
+ \label{e_greed}
+ \end{minipage}
+ \begin{minipage}[b]{.5\linewidth}
+ \centering
+ \includegraphics[width=230px]{./exp3.png}
+ % image.png: 480x480 pixel, 72dpi, 16.93x16.93 cm, bb=0 0 480 480\
+ \caption{Exp3}
+ \label{exp3}
+ \end{minipage}
+\end{figure}
+
+\begin{figure}[ht]
+ \begin{minipage}[b]{.5\linewidth}
+ \centering
+ \includegraphics[width=240px]{./ucb1.png}
+ % image.png: 480x480 pixel, 72dpi, 16.93x16.93 cm, bb=0 0 480 480\
+ \caption{UCB1}
+ \label{ucb1}
+ \end{minipage}
+\end{figure}
+
+All of our code is available at:
+\begin{verbatim}
+http://code.google.com/p/bandits/
+\end{verbatim}
 
 
-[1] Robert Kleinberg, Aleksandrs Slivkins, Eli Upfal, ``Multi-Armed Bandits in Metric Spaces''
+
+% References
+\begin{thebibliography}{99}
+
+\bibitem{xArmed}S. Bubeck, R. Munos, G. Stoltz, and C. Szepesvari.
+``Online Optimization in $\chi$-Armed Bandits''.
+\emph{Advances in Neural Information Processing Systems 21}, 2009, pp. 201-208.
+
+\bibitem{Zooming}R. Kleinberg, A. Slivkins, and E. Upfal.
+``Multi-Armed Bandits in Metric Spaces''.
+\emph{Proceedings of the 40th ACM Symposium on Theory of Computing}, 2008.
+
+\end{thebibliography}
 \end{document}
