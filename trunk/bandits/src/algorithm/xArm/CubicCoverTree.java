@@ -31,7 +31,7 @@ public class CubicCoverTree implements CoverTree<CubicCoverNode>{
 	 * @param dimension Must be greater than zero.
 	 */
 	public CubicCoverTree(int dimension){
-		this(dimension,Math.sqrt(dimension)/2, Math.pow(2.0, -1/dimension));
+		this(dimension,Math.sqrt(dimension)/2.0, Math.pow(0.5, 1.0/ (1.0*dimension)));
 	}
 	
 	/**
@@ -41,8 +41,12 @@ public class CubicCoverTree implements CoverTree<CubicCoverNode>{
 	 * @param rho
 	 */
 	public CubicCoverTree(int dimension, double nu, double rho){
+		System.out.println("dimension is " + Integer.toString(dimension));
+		System.out.println("nu is " + Double.toString(nu));
+		System.out.println("rho is " + Double.toString(rho));		
 		assert(dimension > 0);
 		assert(nu > 0);
+		
 		assert(0 < rho && rho < 1);
 		
 		this.dimension = dimension;
@@ -54,7 +58,6 @@ public class CubicCoverTree implements CoverTree<CubicCoverNode>{
 		this.nu = nu;
 		this.rho = rho;
 		
-		//TODO: create root node, and initialize its associated values.
 		ArrayList<Double> lowerBounds = new ArrayList<Double>(dimension);
 		ArrayList<Double> upperBounds = new ArrayList<Double>(dimension);
 		for(int i=0; i<dimension; ++i){
@@ -76,6 +79,9 @@ public class CubicCoverTree implements CoverTree<CubicCoverNode>{
 			depths.put(root,0);
 		} else {
 			returnNode = findNewNode(root);
+			//set depth
+			int returnNodeDepth = depths.get(returnNode.getParent()) + 1;
+			depths.put(returnNode, returnNodeDepth);
 		}
 
 		nodes.add(returnNode);
@@ -91,24 +97,40 @@ public class CubicCoverTree implements CoverTree<CubicCoverNode>{
 	private CubicCoverNode findNewNode(CubicCoverNode node){
 
 		CubicCoverNode returnNode;
-		
+		// while descending the tree, always choose the path through the child of larger B-value, ties broken arbitrarily.
 		//if left child is null, instantiate it and return it
 		if(node.getLeftChild() == null){
-			ArrayList<Double> lowerBounds = node.getLowerBounds();
+			System.out.println("instantiating left child.");
+			//ArrayList<Double> lowerBounds = node.getLowerBounds();
+			ArrayList<Double> lowerBounds = copyBound(node.getLowerBounds());
 			ArrayList<Double> upperBounds = computeLeftUpperBounds(node.getLowerBounds(), node.getUpperBounds());
+			System.out.println("lower bounds: " + boundsToString(lowerBounds));
+			System.out.println("upper bounds: " + boundsToString(upperBounds));
  			CubicCoverNode newNode = new CubicCoverNode(dimension, lowerBounds, upperBounds, node);
+ 			node.setLeftChild(newNode);
 			returnNode = newNode;
 		} else if(node.getRightChild() == null){
+			System.out.println("instantiating right child");
 			ArrayList<Double> lowerBounds = computeRightLowerBounds(node.getLowerBounds(), node.getUpperBounds());
-			ArrayList<Double> upperBounds = node.getUpperBounds();
+			//ArrayList<Double> upperBounds = node.getUpperBounds();
+			ArrayList<Double> upperBounds = copyBound(node.getUpperBounds());
+			System.out.println("lower bounds: " + boundsToString(lowerBounds));
+			System.out.println("upper bounds: " + boundsToString(upperBounds));
 			CubicCoverNode newNode = new CubicCoverNode(dimension, lowerBounds, upperBounds, node);
+			node.setRightChild(newNode);
 			returnNode = newNode;
 		}else{
+			System.out.println("recursion...");
 			double leftB = getBValue(node.getLeftChild());
 			double rightB = getBValue(node.getRightChild());
-			returnNode = (leftB > rightB) ? findNewNode(node.getLeftChild()) : findNewNode(node.getRightChild());
+			if(leftB > rightB){
+				System.out.println("find recurses left.");
+				returnNode = findNewNode(node.getLeftChild());
+			}else{
+				System.out.println("find recurses right.");
+				returnNode = findNewNode(node.getRightChild());
+			}
 		}
-		
 		return returnNode;
 	}
 	
@@ -118,6 +140,22 @@ public class CubicCoverTree implements CoverTree<CubicCoverNode>{
 	 * @return
 	 */
 	private double getBValue(CubicCoverNode node){
+		double U = computeUpperConfidenceBound(node);
+		double leftB;
+		double rightB;
+		if(node.getLeftChild() == null){
+			leftB = Double.MAX_VALUE;
+		}else{
+			leftB = getBValue(node.getLeftChild());
+		}
+		if(node.getRightChild() == null){
+			rightB = Double.MAX_VALUE;
+		}else{
+			rightB = getBValue(node.getRightChild());
+		}
+		
+		return Math.min(U, Math.max(leftB, rightB));
+		/*
 		if( (node.getLeftChild() == null) || (node.getRightChild() == null)){
 			return Double.MAX_VALUE;
 		}else{
@@ -126,6 +164,7 @@ public class CubicCoverTree implements CoverTree<CubicCoverNode>{
 			double U = computeUpperConfidenceBound(node);
 			return Math.min(U, Math.max(leftB, rightB));
 		}
+		*/
 	}
 	
 	/**
@@ -134,10 +173,11 @@ public class CubicCoverTree implements CoverTree<CubicCoverNode>{
 	 * @return
 	 */
 	private double computeUpperConfidenceBound(CubicCoverNode node){
+		assert(depths.containsKey(node));
 		int h = depths.get(node);
-		double U = totalRewards.get(node) / visitCounts.get(node) 
-		+ Math.sqrt( 2*Math.log(numPicked) / visitCounts.get(node) ) 
-		+ nu * Math.pow(rho, h);
+		double U = 1.0*totalRewards.get(node) / (1.0*visitCounts.get(node)) 
+		+ Math.sqrt( 2*Math.log(numPicked) / (1.0*visitCounts.get(node)) ) 
+		+ nu * Math.pow(rho, h*1.0);
 		return U;
 	}
 	
@@ -153,6 +193,7 @@ public class CubicCoverTree implements CoverTree<CubicCoverNode>{
 			int visitsSoFar = visitCounts.get(node);
 			visitCounts.put(node, visitsSoFar+1);
 		}else{
+			System.out.println("update itializing visit count.");
 			visitCounts.put(node, 1);
 		}
 		
@@ -161,12 +202,15 @@ public class CubicCoverTree implements CoverTree<CubicCoverNode>{
 			double rewardSoFar = totalRewards.get(node);
 			totalRewards.put(node, rewardSoFar + reward);
 		}else{
+			System.out.println("Update initializing total reward.");
 			totalRewards.put(node, reward);
 		}
 		
 		if(node == root){
+			System.out.println("Update reached root.");
 			return;
 		}else{
+			System.out.println("Update goes up the tree...");
 			update(node.getParent(),reward);
 		}
 		repcheck();
@@ -231,7 +275,7 @@ public class CubicCoverTree implements CoverTree<CubicCoverNode>{
 	private ArrayList<Double> computeLeftUpperBounds(ArrayList<Double> lowerBounds, ArrayList<Double> upperBounds){
 		int splittingDimension = chooseSplittingDimension(lowerBounds, upperBounds);
 		double midpoint = (lowerBounds.get(splittingDimension) + upperBounds.get(splittingDimension)) /2;
-		ArrayList<Double> newUpperBounds = upperBounds;
+		ArrayList<Double> newUpperBounds = copyBound(upperBounds);
 		newUpperBounds.set(splittingDimension, midpoint);
 		return newUpperBounds;
 	}
@@ -245,7 +289,7 @@ public class CubicCoverTree implements CoverTree<CubicCoverNode>{
 	private ArrayList<Double> computeRightLowerBounds(ArrayList<Double> lowerBounds, ArrayList<Double> upperBounds){
 		int splittingDimension = chooseSplittingDimension(lowerBounds, upperBounds);
 		double midpoint = (lowerBounds.get(splittingDimension) + upperBounds.get(splittingDimension)) /2;
-		ArrayList<Double> newLowerBounds = lowerBounds;
+		ArrayList<Double> newLowerBounds = copyBound(lowerBounds);
 		newLowerBounds.set(splittingDimension, midpoint);
 		return newLowerBounds;
 	}
@@ -268,6 +312,24 @@ public class CubicCoverTree implements CoverTree<CubicCoverNode>{
 			assert(0<=upper);
 			assert(upper<=1);
 		}
+	}
+	
+	private String boundsToString(ArrayList<Double> bounds){
+		String s = "[ ";
+		for(int i= 0; i< bounds.size(); ++i){
+			s = s + Double.toString(bounds.get(i)) + ", "; 
+		}
+		s = s + "]";
+		return s;
+	}
+	
+	private ArrayList<Double> copyBound(ArrayList<Double> in){
+		ArrayList<Double> out = new ArrayList<Double>();
+		for(int i = 0; i< in.size(); ++i){
+			double element = in.get(i);
+			out.add(i,element);
+		}
+		return out;
 	}
 	
 	/**

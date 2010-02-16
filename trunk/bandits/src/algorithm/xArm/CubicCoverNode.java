@@ -19,15 +19,16 @@ public class CubicCoverNode implements CoverNode{
 	private CubicCoverNode rightChild = null;
 	
 	public CubicCoverNode(int dimension, ArrayList<Double> lowerBounds, ArrayList<Double> upperBounds, CubicCoverNode parent){
-		checkBounds(lowerBounds, upperBounds);
+		this.dimension = dimension;
 		assert(dimension > 0);
 		assert(lowerBounds.size() == dimension);
 		assert(upperBounds.size() == dimension);
 		//initialize
-		this.dimension = dimension;
 		this.lowerBounds = lowerBounds;
 		this.upperBounds = upperBounds;
 		this.parent = parent;
+		//checks
+		checkBounds(lowerBounds, upperBounds);
 	}
 	
 	public void setLeftChild(CubicCoverNode lChild){
@@ -67,6 +68,8 @@ public class CubicCoverNode implements CoverNode{
 	 * @param upperBounds
 	 */
 	private void checkBounds(ArrayList<Double> lowerBounds, ArrayList<Double> upperBounds){
+		//System.out.println("dimension is " + Integer.toString(this.dimension));
+		//System.out.println("lower bounds size " + Integer.toString(lowerBounds.size()));
 		assert(lowerBounds.size() == dimension); 
 		assert(upperBounds.size() == dimension);
 		

@@ -69,10 +69,25 @@ public class CubicCoverTreeTest {
 		double expectedU = 0.7 + nu;
 		assertEquals(expectedU, treeA.getUpperConfidenceBound(root), delta);
 		
-		CubicCoverNode newNode = treeA.pick();
-		treeA.update(newNode, 0.2);
+		CubicCoverNode secondNode = treeA.pick();
+		double secondReward = 0.2;
+		treeA.update(secondNode, secondReward);
+		
+		//confidence interval for root:
 		expectedU = 0.45 + Math.sqrt(2*Math.log(2) / 2) + nu;
 		assertEquals(expectedU, treeA.getUpperConfidenceBound(root), delta);
+		
+		//confidence interval for secondNode
+		double secondExpectedU = secondReward + Math.sqrt(2*Math.log(2)) + nu*rho;
+		assertEquals(secondExpectedU, treeA.getUpperConfidenceBound(secondNode), delta);
+		
+		CubicCoverNode thirdNode = treeA.pick();
+		treeA.update(thirdNode, 0.5);
+		// verify confidence intervals for each node
+		
+		//TODO: verify that the root's bounds haven't changed.
+		
+		
 	}
 
 }
