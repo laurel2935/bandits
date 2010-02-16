@@ -115,13 +115,13 @@ introduces a bias, as our effective hypothesis class (each of the arms)
 probably no longer contains the optimal hypothesis.
 
 \subsection{Zooming Algorithm}
-If you actually want to consider the infinite number of arms, you need
-to have certain information about the relationship between them. For
-instance, arms that are \emph{close} should produce similar
-results. The Zooming Algorithm is defined to work in any example where
-the arms form a metric space. In each phase, certain arms are chosen
-to be \emph{active}, and the algorithm chooses which arm to play from
-these active arms.
+When the number of arms is infinite, additional assumptions are needed
+about the relationship between the arms. For instance, arms
+that are \emph{close} should produce similar results. The Zooming
+Algorithm is defined to work in any example where the arms form a
+metric space. In each phase, certain arms are chosen to be
+\emph{active}, and the algorithm chooses which arm to play from these
+active arms.
 
 The Zooming Algorithm is composed of multiple phases, each of which is
 composed of $2^{i_{ph}}$ rounds, where $i_{ph}$ is the current phase
