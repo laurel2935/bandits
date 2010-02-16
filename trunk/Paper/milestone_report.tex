@@ -250,19 +250,18 @@ $\epsilon$ = $\frac{arms}{rounds}$.  The Exp3 algorithm uses
 $\gamma = \frac{arms}{rounds + 1}$.  In each discretization case, 100
 arms were used.
 
-
-%
+\newcommand{\figwidth}{5in}
 %% \begin{figure}[ht]
 %%  \begin{minipage}[b]{.5\linewidth}
 %%  \centering
-%%  \includegraphics[width=\figwidth]{./e_greed.png}
+%%  \includegraphics[width=\figwidth]{images/e_greed.png}
 %%  % image.png: 480x480 pixel, 72dpi, 16.93x16.93 cm, bb=0 0 480 480\
 %%  \caption{Epsilon Greedy}
 %%  \label{e_greed}
 %%  \end{minipage}
 %%  \begin{minipage}[b]{.5\linewidth}
 %%  \centering
-%%  \includegraphics[width=\figwidth]{./exp3.png}
+%%  \includegraphics[width=\figwidth]{images/exp3.png}
 %%  % image.png: 480x480 pixel, 72dpi, 16.93x16.93 cm, bb=0 0 480 480\
 %%  \caption{Exp3}
 %%  \label{exp3}
@@ -272,34 +271,43 @@ arms were used.
 %% \begin{figure}[ht]
 %%  \begin{minipage}[b]{.5\linewidth}
 %%  \centering
-%%  \includegraphics[width=\figwidth]{./ucb1.png}
+%%  \includegraphics[width=\figwidth]{images/ucb1.png}
 %%  % image.png: 480x480 pixel, 72dpi, 16.93x16.93 cm, bb=0 0 480 480\
 %%  \caption{UCB1}
 %%  \label{ucb1}
 %%  \end{minipage}
 %% \end{figure}
 
-\newcommand{\figwidth}{2in}
-\begin{figure}[ht]
-\centering
-\subfigure[$\epsilon$-greedy.]{
-\includegraphics[width=\figwidth]{images/e_greed.png}
-\label{fig:subfig1}
-}
-\subfigure[Discretized EXP3]{
-\includegraphics[width=\figwidth]{images/exp3.png}
-\label{fig:subfig2}
-}
-\subfigure[Discretized UCB1]{
-\includegraphics[width=\figwidth]{images/ucb1.png}
-\label{fig:subfig3}
-}
-\subfigure[HOO]{
-\includegraphics[width=\figwidth,angle=270]{images/xarm25k.png}
-\label{fig:subfig3}
-}
-\label{fig:subfigureExample}
-\caption[Optional caption for list of figures]{Caption of subfigures \subref{fig:subfig1}, \subref{fig:subfig2} and \subref{fig:subfig3}}
+\begin{figure}[htb]
+  \begin{center}
+    \includegraphics[width=\figwidth]{images/e_greed.png}
+     \caption{$\epsilon greedy$}
+     \label{fig:egreed}
+  \end{center}
+\end{figure}
+
+\begin{figure}[htb]
+  \begin{center}
+     \includegraphics[width=\figwidth]{images/exp3.png}
+     \caption{EXP3}
+     \label{fig:exp3}
+  \end{center}
+\end{figure}
+
+\begin{figure}[htb]
+  \begin{center}
+     \includegraphics[width=\figwidth]{images/ucb1.png}
+     \caption{Discretized UCB1}
+     \label{fig:ucb1}
+  \end{center}
+\end{figure}
+
+\begin{figure}[htb]
+  \begin{center}
+     \includegraphics[width=\figwidth]{images/xarm25k-crop.pdf}
+     \caption{HOO algorithm regret.}
+     \label{fig:hoo}
+  \end{center}
 \end{figure}
 
 
