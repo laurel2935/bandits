@@ -58,9 +58,25 @@ consideration every point.  One natural question to ask is: are these
 infinite-armed bandit algorithms worth it, or is it more advantageous
 to stick with a discretization of the domain into a finite number of
 points and run a standard finite-armed bandit algorithm on them?
+With that in mind, we implemented the following algorithms: discretized
+UCB1, discretized $\epsilon$-greedy, discretized Exp3, Zooming, and
+Hierarchical Optimistic Optimization (HOO).  The latter two of these
+algorithms are designed to work on an infinite-armed bandit, whereas the
+former three all pick a finite number of points in the domain to run on.
 
 
 \section{Algorithms}
+\subsection{General Framework}
+The first order of business in implementing any of these algorithms was
+abstracting everything out so that they could all be easily applied
+without too much redundant code.  For example, the HOO algorithm works
+on reward functions over topological spaces, and the Zooming algorithm
+works on reward functions over metric spaces, so ideally we should just
+be able to pass in some domain that the problem is over and the algorithm
+should just be able to work.  This is what we have done.  In addition,
+bandits have been abstracted (see section on artificial data).
+
+
 \subsection{Discretization Algorithms}
 The simplest approach that one can take when tackling an infinite number of
 arms is to merely pick out some finite number of arms and run a standard
@@ -111,14 +127,14 @@ If you actually want to consider the infinite number of arms, you need to have c
 
 The Zooming Algorithm is composed of multiple phases, each of which is composed of $2^{i_{ph}}$ rounds, where $i_{ph}$ is the current phase number. In a given round, you \emph{activate} an arm if that arm is not covered by another arm. Each arm covers a radius defined by $r_t(v):=\sqrt{8*i_{ph}/(2+n_t(v)))}$ where $v$ is the active arm, and $n_t(v)$ is the number of times a given arm has been chosen at time $t$. Each time an arm is played, its radius shrinks, and at the beginning of each round, you \emph{activate} arms until you have a complete covering using a \emph{covering oracle}. This oracle can either return an uncovered arm, or state that there is no such arm. After the space is covered, you play the arm with the optimal index, defined as $I_t(v):=\mu_t(v)+2*r_t(v)$
 
-A point of concern to us with this algorithm is that it does not seem to remember anything from previous phases when a new phase starts. The only piece of information it maintains is the phase number, which influeces the confidence radius and index, which changes the balance between exploration and exploitation. It seems like it may be better to start on a later phase, given knowledge of the specific problem. Aditionally, the \emph{covering oracle} becomes very complicated once you move into more advanced spaces.
+A point of concern to us with this algorithm is that it does not seem to remember anything from previous phases when a new phase starts. The only piece of information it maintains is the phase number, which influeces the confidence radius and index, which changes the balance between exploration and exploitation. It seems like it may be better to start on a later phase, given knowledge of the specific problem. Additionally, the \emph{covering oracle} becomes very complicated once you move into more advanced spaces.
 
 \subsection{Hierarchical Optimistic Optimization}
 Some very informative text
 
 \section{Artificial Data Description}
 For now, we have just been testing the algorithms on reward functions from
-$\mathbb{R}$ to $\mathbb{R}$.  We currently have support for polynomials
+$[0,1]$ to $\mathbb{R}$.  We currently have support for polynomials
 of arbitrary degree, binomial functions, composing two arbitrary functions,
 and adding noise in the form of multiplying the unbiased result by a random
 number in a given range.
@@ -130,13 +146,47 @@ typically the case that there is some side information (e.g. a search term)
 that can be used in determining which arm to choose.  In that case, this
 turns into a contextual bandit problem, which the algorithms we have
 implemented are not suited for.  It might be possible to adapt these
-algorithms for the contextual bandit problem.
+algorithms for the contextual bandit problem, but that would appear to be
+a project in and of itself.
 \\
 \section{Conclusion}
 In conclusion, we did some stuff, and will do more.
 \\
 \section{Future Work}
-hgjfjjh
+In the next month or so, we intend to add more domains that our algorithms
+can work over.  This should be relatively easy due to the abstraction
+as described above, although certain aspects might be difficult (i.e.
+constructing a covering oracle).  We would also like to move beyond
+artificial data.  One possibility is applying these algorithms to
+locations of a set of sensors.  While there is real data available for 
+this, the data is naturally only taken at a finite number of locations
+or configurations, and so we would have to interpolate this data to come
+up with a reward function defined over all possible positions.
+
+Another possibility is applying these algorithms to parameters in other
+algorithms.  For example, when designing an AI for say, Tic-Tac-Toe, 
+we might have a scoring function on a given board describing how
+`good' that board is for the current player, and play the move that gives
+us the highest score.  One (not necessarily optimal)
+way to implement this scoring function would be to assign a weight to each
+square on the board, and score the board by the weight of each position
+combined with which player occupies each position.  Here, one of our
+bandit algorithms could be used to determine the optimal set of weights
+to use.  Since these algorithms do not necessarily work against an
+adversary, though, we would have to have them play against a random
+player.
+
+Going back to artificial data, we could also try to construct reward
+functions that cause certain algorithms to do well and others to do poorly.
+This would be proof that no algorithm is necessarily better than the others
+in all cases, and would answer our initial ``Is it worth it?'' question.
+We could also attempt to improve the Zooming algorithm so that information
+is carried over between the different phases, make or own experimental
+algorithms, or implement more algorithms from more papers.  At this
+point, we have not decided for sure which of these options we would like
+to pursue, which is also dependent on how much time they take up.
+
+
 
 \section*{References}
 
