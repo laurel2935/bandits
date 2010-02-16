@@ -2,6 +2,8 @@ package algorithm.xArm;
 
 import java.util.ArrayList;
 
+import algorithm.Algorithm;
+
 /**
  * 
  * @author mfaulkne
@@ -37,7 +39,8 @@ public class XArm{
 		return choice;
 	}
 	
-	public void receiveReward(double reward){
+	
+	public void recieveReward(double reward){
 		assert(pendingNode != null);
 		coverTree.update(pendingNode, reward);
 		pendingNode = null;

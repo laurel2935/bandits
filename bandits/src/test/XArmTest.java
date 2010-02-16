@@ -40,14 +40,13 @@ public class XArmTest {
 	public void testReceiveReward() {
 		int dimension = 1;
 		XArm xArm = new XArm(dimension);
-		int numIterations = 10;
+		int numIterations = 100;
 		for(int i=0; i<numIterations; ++i){
 			ArrayList<Double> choice = xArm.makeChoice();
 			double choiceVal = choice.get(0);
 			System.out.println("choice is " + Double.toString(choiceVal));
 			double reward = choiceVal;
-			xArm.receiveReward(reward);
+			xArm.recieveReward(reward);
 		}
 	}
-
 }
