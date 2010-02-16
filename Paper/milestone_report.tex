@@ -155,10 +155,10 @@ arbitrary topological space $X$. The hierarchical optimistic
 optimization algorithm (HOO) applies to this case under several
 assumptions. First, the payoffs are stochastic (non-adversarial), with
 distributions of bounded support. Second, the payoff function mapping
-arms in $X$ to rewards is \emph{weakly Lipschitz}, which in short requires
-the function to be Lipschitz at any maxima, but does not constrain the
+arms in $X$ to rewards is \emph{weakly Lipschitz} which, in short, requires
+the function to be Lipschitz at any maximum, but does not constrain the
 function at points away from a maxima.
-\\
+
 The HOO algorithm is implemented by iteratively refining a
 \emph{covering tree} over $X$, and maintaining confidence bounds
 for each node in the tree. The covering tree is a binary tree where
@@ -166,7 +166,7 @@ each node represents (covers) a subset of $X$ equal to the union of
 all subsets of nodes beneath it in the tree. Whenever the algorithm
 selects an arm, a new leaf containing that arm is added to the
 tree. The region covered by a new leaf is a subset of the region
-covered by its parent, so in this way the leaves define an increasing
+covered by its parent, so in this way the leaves define an increasingly
 fine cover of $X$. For each node $n_i$ in the tree, an empirical
 average $\mu_i$ of all rewards received by arms covered by node $n_i$
 is maintained, along with an upper confidence bound for
@@ -275,7 +275,7 @@ arms were used.
 %%  \end{minipage}
 %% \end{figure}
 
-\begin{figure}[htb]
+\begin{figure}[h!]
   \begin{center}
     \includegraphics[width=\figwidth]{images/e_greed.png}
      \caption{$\epsilon$ greedy regret}
@@ -283,7 +283,7 @@ arms were used.
   \end{center}
 \end{figure}
 
-\begin{figure}[htb]
+\begin{figure}[h!]
   \begin{center}
      \includegraphics[width=\figwidth]{images/exp3.png}
      \caption{Discretized EXP3 regret}
@@ -291,7 +291,7 @@ arms were used.
   \end{center}
 \end{figure}
 
-\begin{figure}[htb]
+\begin{figure}[h!]
   \begin{center}
      \includegraphics[width=\figwidth]{images/ucb1.png}
      \caption{Discretized UCB1 regret}
@@ -299,7 +299,7 @@ arms were used.
   \end{center}
 \end{figure}
 
-\begin{figure}[htb]
+\begin{figure}[h!]
   \begin{center}
      \includegraphics[width=\figwidth]{images/zoom-crop.pdf}
      \caption{Zooming Algorithm regret}
@@ -307,15 +307,18 @@ arms were used.
   \end{center}
 \end{figure}
 
-\begin{figure}[htb]
+\begin{figure}[h!]
   \begin{center}
      \includegraphics[width=\figwidth]{images/zoomlog-crop.pdf}
-     \caption{In this log plot of the Zooming Algorithm's regret, you can see that the spikes occur regularly, reflecting the phase sizes of $2^{i_{ph}}$. Information does not carry over into new phases, so the algorithm starts from scratch each phase.}
+     \caption{In this log plot of the Zooming Algorithm's regret, you
+     can see that the spikes occur regularly, reflecting the phase
+     sizes of $2^{i_{ph}}$. Information does not carry over into new
+     phases, so the algorithm starts from scratch each phase.}
      \label{fig:zoomlog}
   \end{center}
 \end{figure}
 
-\begin{figure}[htb]
+\begin{figure}[h!]
   \begin{center}
      \includegraphics[width=\figwidth]{images/xarm25k-crop.pdf}
      \caption{HOO algorithm regret.}
@@ -323,6 +326,9 @@ arms were used.
   \end{center}
 \end{figure}
 
+
+\clearpage
+\section*{}
 
 All of our code is available at:
 \begin{verbatim}
