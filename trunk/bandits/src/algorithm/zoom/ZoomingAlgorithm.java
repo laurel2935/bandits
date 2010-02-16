@@ -10,9 +10,21 @@ import algorithm.Algorithm;
 
 public class ZoomingAlgorithm extends Algorithm {
 	private CoveringOracle oracle;
+	private int iph = 1; //phase i
+	private int round = 1; //round number of the given phase
+	private Arm chosen = null;
+	
+	// The list of active arms, as chosen by the oracle
+	private ArrayList<Arm> active;
+	
 	public ZoomingAlgorithm(Domain d){
 		domain = d;
 		oracle = domain.getCoveringOracle();
+	}
+	public ZoomingAlgorithm(Domain d, int startPhase){
+		domain = d;
+		oracle = domain.getCoveringOracle();
+		iph = startPhase;
 	}
 	private class Arm{
 		private DomainElement identity;
@@ -49,13 +61,7 @@ public class ZoomingAlgorithm extends Algorithm {
 		}
 	}
 	
-	private int iph = 1; //phase i
-	private int round = 1; //round number of the given phase
-	private Arm chosen = null;
 	
-	// The list of active arms, as chosen by the oracle
-	// I'm not yet sure how we're representing our arms
-	private ArrayList<Arm> active;
 	
 	
 	// Creates a complete covering given the set of active arms
