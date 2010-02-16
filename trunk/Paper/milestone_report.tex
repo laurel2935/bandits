@@ -2,7 +2,7 @@
 \usepackage{nips07submit_e,times}
 %\documentstyle[nips07submit_09,times]{article}
 \usepackage{graphicx}
-
+\usepackage{subfigure}
 \usepackage{amssymb}
 
 \title{Infinitely-Armed Bandit Algorithms}
@@ -115,33 +115,93 @@ introduces a bias, as our effective hypothesis class (each of the arms)
 probably no longer contains the optimal hypothesis.
 
 \subsection{Zooming Algorithm}
-If you actually want to consider the infinite number of arms, you need to have certain information about the relationship between them. For instance, arms that are \emph{close} should produce similar results. The Zooming Algorithm is defined to work in any example where the arms form a metric space. In each phase, certain arms are chosen to be \emph{active}, and the algorithm chooses which arm to play from these active arms.
+If you actually want to consider the infinite number of arms, you need
+to have certain information about the relationship between them. For
+instance, arms that are \emph{close} should produce similar
+results. The Zooming Algorithm is defined to work in any example where
+the arms form a metric space. In each phase, certain arms are chosen
+to be \emph{active}, and the algorithm chooses which arm to play from
+these active arms.
 
-The Zooming Algorithm is composed of multiple phases, each of which is composed of $2^{i_{ph}}$ rounds, where $i_{ph}$ is the current phase number. In a given round, you \emph{activate} an arm if that arm is not covered by another arm. Each arm covers a radius defined by $r_t(v):=\sqrt{8*i_{ph}/(2+n_t(v)))}$ where $v$ is the active arm, and $n_t(v)$ is the number of times a given arm has been chosen at time $t$. Each time an arm is played, its radius shrinks, and at the beginning of each round, you \emph{activate} arms until you have a complete covering using a \emph{covering oracle}. This oracle can either return an uncovered arm, or state that there is no such arm. After the space is covered, you play the arm with the optimal index, defined as $I_t(v):=\mu_t(v)+2*r_t(v)$
+The Zooming Algorithm is composed of multiple phases, each of which is
+composed of $2^{i_{ph}}$ rounds, where $i_{ph}$ is the current phase
+number. In a given round, you \emph{activate} an arm if that arm is
+not covered by another arm. Each arm covers a radius defined by
+$r_t(v):=\sqrt{8*i_{ph}/(2+n_t(v)))}$ where $v$ is the active arm, and
+$n_t(v)$ is the number of times a given arm has been chosen at time
+$t$. Each time an arm is played, its radius shrinks, and at the
+beginning of each round, you \emph{activate} arms until you have a
+complete covering using a \emph{covering oracle}. This oracle can
+either return an uncovered arm, or state that there is no such
+arm. After the space is covered, you play the arm with the optimal
+index, defined as $I_t(v):=\mu_t(v)+2*r_t(v)$
 
-A point of concern to us with this algorithm is that it does not seem to remember anything from previous phases when a new phase starts. The only piece of information it maintains is the phase number, which influences the confidence radius and index, which changes the balance between exploration and exploitation. It seems like it may be better to start on a later phase, given knowledge of the specific problem. Additionally, the \emph{covering oracle} becomes very complicated once you move into more advanced spaces.
+A point of concern to us with this algorithm is that it does not seem
+to remember anything from previous phases when a new phase starts. The
+only piece of information it maintains is the phase number, which
+influences the confidence radius and index, which changes the balance
+between exploration and exploitation. It seems like it may be better
+to start on a later phase, given knowledge of the specific
+problem. Additionally, the \emph{covering oracle} becomes very
+complicated once you move into more advanced spaces.
 
-Additionally, we have run into some issues under more complicated bandit problems. When there are multiple peaks, the algorithm seems to have trouble converging. This may be due to a bug in our code, or some parameter that needs to be tuned in the algorithm.
+Additionally, we have run into some issues under more complicated
+bandit problems. When there are multiple peaks, the algorithm seems to
+have trouble converging. This may be due to a bug in our code, or some
+parameter that needs to be tuned in the algorithm.
+
 \subsection{Hierarchical Optimistic Optimization}
-Some very informative text
+Our final algorithm addresses the case of infinite arms over an
+arbitrary topological space $X$. The hierarchical optimistic
+optimization algorithm (HOO) applies to this case under several
+assumptions. First, the payoffs are stochastic (non-adversarial), with
+distributions of bounded support. Second, the payoff function mapping
+arms in $X$ to rewards is \emph{weakly Lipschitz}, which in short requires
+the function to be Lipschitz at any maxima, but does not constrain the
+function at points away from a maxima.
+\\
+The HOO algorithm is implemented by iteratively refining a
+\emph{covering tree} over $X$, and maintaining confidence bounds
+for each node in the tree. The covering tree is a binary tree where
+each node represents (covers) a subset of $X$ equal to the union of
+all subsets of nodes beneath it in the tree. Whenever the algorithm
+selects an arm, a new leaf containing that arm is added to the
+tree. The region covered by a new leaf is a subset of the region
+covered by its parent, so in this way the leaves define an increasing
+fine cover of $X$. For each node $n_i$ in the tree, an empirical
+average $\mu_i$ of all rewards received by arms covered by node $n_i$
+is maintained, along with an upper confidence bound for
+$\mu_i$. These upper confidence bounds are used whenever the algorithm
+selects an arm: roughly, the algorithm descends the tree by choosing
+at each node the child with larger upper confidence bound. In this
+way, HOO resembles the UCB1 algorithm for gaussian processes, in that
+nearby points have similar confidence bounds, and that the algorithm
+optimistically selects using these bounds.
 
+So far, the HOO algorithm has been implemented using a covering tree
+on the unit hypercube for a Euclidean space. This is specifically
+analyzed in \cite{xArmed}. While this is a suitable space for many
+experiments, we are also considering implementing a more specifically
+``topological'' space, such as a torus, which would involve a similarly
+implemented covering tree, but would allow evaluation of the
+algorithm on a more interesting space.
+\\
 \section{Artificial Data}
 For now, we have just been testing the algorithms on reward functions from
 $[0,1]$ to $\mathbb{R}$.  We currently have support for polynomials
 of arbitrary degree, binomial functions, composing two arbitrary functions,
 and adding noise in the form of multiplying the unbiased result by a random
 number in a given range.
-\\
+
 \section{Possible Applications}
 One issue with bandit algorithms is that there are relatively few
 situations where a pure bandit algorithm is applicable.  Rather, is it
-typically the case that there is some side information (e.g. a search term)
-that can be used in determining which arm to choose.  In that case, this
-turns into a contextual bandit problem, which the algorithms we have
-implemented are not suited for.  It might be possible to adapt these
-algorithms for the contextual bandit problem, but that would appear to be
-a project in and of itself.
-\\
+typically the case that there is some side information (e.g. a search
+term) that can be used in determining which arm to choose.  In that
+case, this turns into a contextual bandit problem, which the
+algorithms we have implemented are not suited for.  It might be
+possible to adapt these algorithms for the contextual bandit problem,
+but that would appear to be a project in and of itself.  \\
 \section{Conclusion}
 In conclusion, we did some stuff, and will do more.
 \\
@@ -191,32 +251,57 @@ $\gamma = \frac{arms}{rounds + 1}$.  In each discretization case, 100
 arms were used.
 
 
+%
+%% \begin{figure}[ht]
+%%  \begin{minipage}[b]{.5\linewidth}
+%%  \centering
+%%  \includegraphics[width=\figwidth]{./e_greed.png}
+%%  % image.png: 480x480 pixel, 72dpi, 16.93x16.93 cm, bb=0 0 480 480\
+%%  \caption{Epsilon Greedy}
+%%  \label{e_greed}
+%%  \end{minipage}
+%%  \begin{minipage}[b]{.5\linewidth}
+%%  \centering
+%%  \includegraphics[width=\figwidth]{./exp3.png}
+%%  % image.png: 480x480 pixel, 72dpi, 16.93x16.93 cm, bb=0 0 480 480\
+%%  \caption{Exp3}
+%%  \label{exp3}
+%%  \end{minipage}
+%% \end{figure}
+
+%% \begin{figure}[ht]
+%%  \begin{minipage}[b]{.5\linewidth}
+%%  \centering
+%%  \includegraphics[width=\figwidth]{./ucb1.png}
+%%  % image.png: 480x480 pixel, 72dpi, 16.93x16.93 cm, bb=0 0 480 480\
+%%  \caption{UCB1}
+%%  \label{ucb1}
+%%  \end{minipage}
+%% \end{figure}
+
+\newcommand{\figwidth}{2in}
 \begin{figure}[ht]
- \begin{minipage}[b]{.5\linewidth}
- \centering
- \includegraphics[width=220px]{./e_greed.png}
- % image.png: 480x480 pixel, 72dpi, 16.93x16.93 cm, bb=0 0 480 480\
- \caption{Epsilon Greedy}
- \label{e_greed}
- \end{minipage}
- \begin{minipage}[b]{.5\linewidth}
- \centering
- \includegraphics[width=220px]{./exp3.png}
- % image.png: 480x480 pixel, 72dpi, 16.93x16.93 cm, bb=0 0 480 480\
- \caption{Exp3}
- \label{exp3}
- \end{minipage}
+\centering
+\subfigure[$\epsilon$-greedy.]{
+\includegraphics[width=\figwidth]{images/e_greed.png}
+\label{fig:subfig1}
+}
+\subfigure[Discretized EXP3]{
+\includegraphics[width=\figwidth]{images/exp3.png}
+\label{fig:subfig2}
+}
+\subfigure[Discretized UCB1]{
+\includegraphics[width=\figwidth]{images/ucb1.png}
+\label{fig:subfig3}
+}
+\subfigure[HOO]{
+\includegraphics[width=\figwidth,angle=270]{images/xarm25k.png}
+\label{fig:subfig3}
+}
+\label{fig:subfigureExample}
+\caption[Optional caption for list of figures]{Caption of subfigures \subref{fig:subfig1}, \subref{fig:subfig2} and \subref{fig:subfig3}}
 \end{figure}
 
-\begin{figure}[ht]
- \begin{minipage}[b]{.5\linewidth}
- \centering
- \includegraphics[width=220px]{./ucb1.png}
- % image.png: 480x480 pixel, 72dpi, 16.93x16.93 cm, bb=0 0 480 480\
- \caption{UCB1}
- \label{ucb1}
- \end{minipage}
-\end{figure}
 
 All of our code is available at:
 \begin{verbatim}
