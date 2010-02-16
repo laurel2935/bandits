@@ -36,36 +36,35 @@ Daniel Rosenberg \\
 \maketitle
 
 \begin{abstract}
-We have been considering a variation on the standard K-armed bandit 
-problem where the number of arms is infinite.  Here we present
+Our project considers a variation on the standard K-armed bandit 
+problem where the number of arms is infinite. Here we present
 our progress and plans for the future.
 \end{abstract}
 
 \section{Background}
-In many situations, the number of arms on a K-armed bandit is actually
-very large.  For example, in the case of choosing an ordering of $N$ ads,
-the number of possible arms to pull is actually $N!$, which is far too
-large for any standard finite-armed bandit algorithm to handle.
-Generalizing, it may be the case that the number of arms on a bandit is
-actually infinite.  Examples of this include optimizing parameters of
-some algorithm or classifier and maximizing a noisy function over a domain
-containing an infinite number of points, such as a unit hypercube.
+Many problems which can be expressed as K-armed bandit problems result
+in an intractably large number of arms.  For example, in the case of
+choosing an ordering of $N$ ads, the number of possible arms to pull
+is actually $N!$, which is far too large for any standard finite-armed
+bandit algorithm to handle.  Generalizing, it may be the case that the
+number of arms on a bandit is actually infinite.  Examples of this
+include optimizing parameters of some algorithm or classifier and
+maximizing a noisy function over a domain containing an infinite
+number of points, such as a unit hypercube.
 
 The algorithms designed to handle an infinite-armed bandit can be
 partitioned into those algorithms which merely discretize the domain
 into a finite number of points, and those which actually take into
 consideration every point.  One natural question to ask is: are these
-infinite-armed bandit algorithms worth it, or is it more advantageous
-to stick with a discretization of the domain into a finite number of
-points and run a standard finite-armed bandit algorithm on them?
-With that in mind, we implemented the following algorithms: discretized
-UCB1, discretized $\epsilon$-greedy, discretized Exp3,
-Zooming\cite{Zooming}, and
-Hierarchical Optimistic Optimization (HOO)\cite{xArmed}.
-The latter two of these
-algorithms are designed to work on an infinite-armed bandit, whereas the
-former three all pick a finite number of points in the domain to run on.
-
+infinite-armed bandit algorithms worthwhile from a practical
+standpoint, or is it more advantageous to stick with a discretization
+of the domain into a finite number of points and run a standard
+finite-armed bandit algorithm?  With that in mind, we implemented the
+following algorithms: discretized UCB1, discretized $\epsilon$-greedy,
+discretized Exp3, Zooming\cite{Zooming}, and Hierarchical Optimistic
+Optimization (HOO)\cite{xArmed}.  The latter two of these algorithms
+are designed to work on an infinite-armed bandit, whereas the former
+three all pick a finite number of points in the domain to run on.
 
 \section{Algorithms}
 \subsection{General Framework}
@@ -179,13 +178,12 @@ nearby points have similar confidence bounds, and that the algorithm
 optimistically selects using these bounds.
 
 So far, the HOO algorithm has been implemented using a covering tree
-on the unit hypercube for a Euclidean space. This is specifically
-analyzed in \cite{xArmed}. While this is a suitable space for many
-experiments, we are also considering implementing a more specifically
-``topological'' space, such as a torus, which would involve a similarly
-implemented covering tree, but would allow evaluation of the
-algorithm on a more interesting space.
-\\
+on the $n$-dimensional unit hypercube for a Euclidean space. This is
+specifically analyzed in \cite{xArmed}. While this is a suitable space
+for many experiments, we are also considering implementing a more
+specifically ``topological'' space, such as a torus, which would
+involve a similarly implemented covering tree, but would allow
+evaluation of the algorithm on a more interesting space.  \\
 \section{Artificial Data}
 For now, we have just been testing the algorithms on reward functions from
 $[0,1]$ to $\mathbb{R}$.  We currently have support for polynomials
