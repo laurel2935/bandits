@@ -3,7 +3,6 @@ package bandit;
 
 import java.lang.Math;
 
-import algorithm.RealBandit;
 
 import domain.DomainElement;
 import domain.RealNumber;

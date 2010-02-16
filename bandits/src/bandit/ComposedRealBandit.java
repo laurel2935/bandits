@@ -1,5 +1,4 @@
 package bandit;
-import algorithm.RealBandit;
 import domain.Domain;
 import domain.DomainElement;
 import domain.RealNumber;
