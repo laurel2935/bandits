@@ -3,7 +3,6 @@ package bandit;
 
 import java.util.Random;
 
-import algorithm.RealBandit;
 
 import domain.DomainElement;
 import domain.RealRange;
