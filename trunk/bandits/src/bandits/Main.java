@@ -20,12 +20,12 @@ public class Main {
 
         // Make algorithm
         int arms = 100;
-        Algorithm test_alg = new RandomAlgorithm(noise.domain);
+        Algorithm test_alg = new DiscretizedUCB1(noise.domain, arms);
 
         // Run
         int num_plays = 1000000;
-        Trial test_run = new Trial(test_alg, noise, num_plays, "e_greed1.txt"); 
-        test_run.setWriteInterval(1000);
+        Trial test_run = new Trial(test_alg, noise, num_plays, "ucb1.txt"); 
+        test_run.setWriteInterval(100);
         test_run.run();
     }
 
