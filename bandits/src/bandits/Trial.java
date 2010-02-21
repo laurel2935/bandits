@@ -96,7 +96,8 @@ public class Trial {
             // Write to file, if necessary
             if (toFile && (rounds % writeInterval == 0)) {
                 try {
-                    writer.write("" + this.rounds + " " + average_regret +
+                    // Write instantaneous regret
+                    writer.write("" + this.rounds + " " + regret +
                                  "\n");
                 } catch (IOException e) {
                     e.printStackTrace();
