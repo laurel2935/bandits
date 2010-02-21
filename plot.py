@@ -50,12 +50,14 @@ if plot_title == None:
     plot_title = output_filename
 
 # Do averaging, if necessary
-if average != 1:
+if average > 1:
     # Write averaged numbers to new file
     input_file = open(input_filename, 'r')
     new_filename = gplotter.temp_filename()
     new_input_file = open(new_filename, 'w')
     current_nums = []
+    current_sum = 0
+    current_index = 0 # Index of where to insert
     for line in input_file:
         line = line.split()
         # Make sure this is a valid line
@@ -63,12 +65,14 @@ if average != 1:
             continue
         x = int(line[0])
         y = float(line[1])
-        current_nums = [y] + current_nums
-        # Remove extras, if necessary
-        if average != 0 and len(current_nums) > average:
-            current_nums.pop()
-            assert(len(current_nums) == average)
-        val = sum(current_nums) / len(current_nums)
+        current_sum += y
+        if len(current_nums) < average:
+            current_nums.append(y)
+        else:
+            current_sum -= current_nums[current_index]
+            current_nums[current_index] = y
+            current_index = (current_index + 1) % average
+        val = current_sum / len(current_nums)
         new_input_file.write(str(x) + " " + str(val) + '\n')
     # Close files and replace filename
     input_file.close()
