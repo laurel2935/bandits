@@ -16,6 +16,7 @@ public class RealRange extends Domain {
      */
     public RealRange(double min, double max) {
         super();
+        assert(max >= min);
         this.min = min;
         this.max = max;
     }
