@@ -1,5 +1,7 @@
 package domain;
 
+import java.util.Random;
+
 public class RNRange extends Domain {
 
     // List of dimensions
@@ -7,6 +9,9 @@ public class RNRange extends Domain {
     
     // Dimension
     private int dim;
+    
+    // Random number generator
+    private Random rand;
 
     /*
      * Constructor.
@@ -21,6 +26,7 @@ public class RNRange extends Domain {
         for (int i = 0; i < dim; i++) {
             this.ranges[i] = new RealRange(bounds[2 * i], bounds[2 * i + 1]);
         }
+        this.rand = new Random();
     }
     
     @Override
@@ -50,8 +56,15 @@ public class RNRange extends Domain {
 
     @Override
     public DomainElement randomElement() {
-        // TODO Auto-generated method stub
-        return null;
+        double[] vals = new double[this.dim];
+        // Put a random value in each entry
+        for (int i = 0; i < this.dim; i++) {
+            double min = this.ranges[i].getMin();
+            double max = this.ranges[i].getMax();
+            double val = (max - min) * this.rand.nextDouble() + min;
+            vals[i] = val;
+        }
+        return new RealVector(vals);
     }
 
 }
