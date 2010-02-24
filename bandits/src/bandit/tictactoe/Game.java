@@ -16,9 +16,9 @@ public class Game {
      */
     public Game(Player p1, Player p2) {
         this.p1 = p1;
-        this.p1.setSide(board.X); // Player 1 is X
+        this.p1.setSide(Board.X); // Player 1 is X
         this.p2 = p2;
-        this.p2.setSide(board.O); // Player 2 is O
+        this.p2.setSide(Board.O); // Player 2 is O
         this.board = new Board();
     }
     
@@ -32,13 +32,13 @@ public class Game {
             if (this.board.gameOver()) {
                 break;
             }
-            Move m1 = p1.makeMove(this.board);
+            Move m1 = p1.makeMove(this.board.clone());
             this.board.makeMove(m1, this.p1.getSide());
             
             if (this.board.gameOver()) {
                 break;
             }
-            Move m2 = p2.makeMove(this.board);
+            Move m2 = p2.makeMove(this.board.clone());
             this.board.makeMove(m2, this.p2.getSide());   
         }
         // Done with game.

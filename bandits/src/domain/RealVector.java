@@ -51,6 +51,6 @@ public class RealVector implements DomainElement {
 			return 0; // ?? Not sure why this is here, carrying over...
 	}    
 	public String toString(){
-		return value+"";
+		return value.toString();
 	}
 }

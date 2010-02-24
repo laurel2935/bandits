@@ -17,14 +17,14 @@ public class RNRange extends Domain {
      * Constructor.
      * @param bounds
      */
-    public RNRange(double[] bounds) {
+    public RNRange(double[][] bounds) {
         // Need two numbers for each dimension
         assert(bounds.length % 2 == 0);
-        this.dim = bounds.length % 2;
+        this.dim = bounds.length;
         // Make the ranges
         this.ranges = new RealRange[this.dim];
         for (int i = 0; i < dim; i++) {
-            this.ranges[i] = new RealRange(bounds[2 * i], bounds[2 * i + 1]);
+            this.ranges[i] = new RealRange(bounds[i][0], bounds[i][1]);
         }
         this.rand = new Random();
     }

@@ -47,6 +47,10 @@ public class RealRange extends Domain {
         return this.max;
     }
     
+    public String toString() {
+        return "" + this.min + ", " + this.max;
+    }
+    
     
     public RealNumber randomElement() {
         // Just get a random number in the range.

@@ -9,7 +9,7 @@ public abstract class Player {
      */
     public abstract Move makeMove(Board board); // Makes a move
     
-    private int SIDE; // O or X.
+    protected int SIDE; // O or X.
     
     /*
      * Sets this player's side.
