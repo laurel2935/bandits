@@ -9,7 +9,7 @@ public abstract class RNBandit extends Bandit{
      * @param bounds An array describing the bounds of the interval in R^n.
      * Should have length 2n.
      */
-    public RNBandit(double[] bounds) {
+    public RNBandit(double[][] bounds) {
         this.domain = new RNRange(bounds);
     }
     

@@ -8,7 +8,7 @@ public class Board {
     private int[][] board;
     
     // Size of board.
-    private static final int BOARD_SIZE = 3;
+    public static final int BOARD_SIZE = 3;
     
     // Values
     public static final int X = -1;
@@ -44,7 +44,7 @@ public class Board {
      * @param col Column of entry to set.
      * @param val Value to set to.
      */
-    public void setEntry(int row, int col, int val) {
+    private void setEntry(int row, int col, int val) {
         assert(val == O || val == X || val == BLANK);
         this.board[row][col] = val;
     }
@@ -135,5 +135,31 @@ public class Board {
         }
         // No winner.
         return BLANK;
+    }
+    
+    /*
+     * Converts this board into a string.
+     */
+    public String toString() {
+        String output = "";
+        for (int r = 0; r < Board.BOARD_SIZE; r++) {
+            for (int c = 0; c < Board.BOARD_SIZE; c++) {
+                output += this.board[r][c];
+            }
+        }
+        return output;
+    }
+    
+    /*
+     * Clones this board.
+     */
+    public Board clone() {
+        Board board2 = new Board();
+        for (int r = 0; r < Board.BOARD_SIZE; r++) {
+            for (int c = 0; c < Board.BOARD_SIZE; c++) {
+                board2.setEntry(r, c, this.board[r][c]);
+            }
+        }
+        return board2;
     }
 }

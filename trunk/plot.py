@@ -11,7 +11,7 @@ import os
 
 # Usage statement
 usage = 'Usage: python plot.py input_filename [--output output_filename] \
-[--title plot_title] [average num_points]'
+[--title plot_title] [--average num_points]'
 
 # Extract command line arguments
 try:
