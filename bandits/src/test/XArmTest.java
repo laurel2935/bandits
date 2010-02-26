@@ -32,8 +32,11 @@ public class XArmTest {
 	public void testMakeChoice() {
 		int dimension = 1;
 		XArm xArm = new XArm(dimension);
-		ArrayList<Double> choice = xArm.makeChoice();
-		System.out.println("choice is " + Double.toString(choice.get(0)));
+		//ArrayList<Double> choice = xArm.makeChoice();
+		//System.out.println("choice is " + Double.toString(choice.get(0)));
+		double choice = xArm.makeChoice().getValue();
+		System.out.println("choice is" + choice);
+		
 	}
 
 	@Test
@@ -42,8 +45,9 @@ public class XArmTest {
 		XArm xArm = new XArm(dimension);
 		int numIterations = 100;
 		for(int i=0; i<numIterations; ++i){
-			ArrayList<Double> choice = xArm.makeChoice();
-			double choiceVal = choice.get(0);
+			//ArrayList<Double> choice = xArm.makeChoice();
+			//double choiceVal = choice.get(0);
+			double choiceVal = xArm.makeChoice().getValue();
 			System.out.println("choice is " + Double.toString(choiceVal));
 			double reward = choiceVal;
 			xArm.recieveReward(reward);
