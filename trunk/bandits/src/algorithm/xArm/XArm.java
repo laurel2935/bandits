@@ -3,6 +3,7 @@ package algorithm.xArm;
 import java.util.ArrayList;
 
 import algorithm.Algorithm;
+import domain.RealNumber;
 
 /**
  * 
@@ -11,7 +12,7 @@ import algorithm.Algorithm;
  * TODO: needs to implement/extend an interface/abstract class
  * TODO: currently requires elements to be represented by vectors
  */
-public class XArm{
+public class XArm extends Algorithm{
 	private final int dimension;
 	private CoverTree<CubicCoverNode> coverTree;
 	private CubicCoverNode pendingNode = null;
@@ -21,7 +22,10 @@ public class XArm{
 		this.coverTree = new CubicCoverTree(dimension);
 	}
 	
-	public ArrayList<Double> makeChoice(){
+	/**
+	 * TODO: this currently bottlenecks down to 1-D case. Need to implement more domains.
+	 */
+	public RealNumber makeChoice(){
 		assert(pendingNode == null);
 		pendingNode = coverTree.pick();
 		
@@ -36,7 +40,8 @@ public class XArm{
 			double u = upperBounds.get(i);
 			choice.add(i,(l+u)/2);
 		}
-		return choice;
+		RealNumber r = new RealNumber(choice.get(0));
+		return r;
 	}
 	
 	

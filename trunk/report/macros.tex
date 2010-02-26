@@ -1,0 +1,233 @@
+\newcommand{\OPT}{\textsf{OPT}}
+\newcommand{\NULL}{\textsf{null}}
+
+% ==============================================
+% TEXT MANIPULATION MACROS, BASIC MACROS
+% ==============================================
+\newcommand{\ignore}[1]{}
+\newcommand{\myskip}{\myvspace{-1mm}}
+\newcommand{\captionsmall}[1]{\caption{\small #1}}
+\newcommand{\commentout}[1]{}
+
+\newcommand{\cf}{\emph{cf.}}
+\def \etal {\emph{et al.}\ }
+
+\newcommand{\ith}{\ensuremath{i^{\mathrm{th}}}\xspace}
+\newcommand{\jth}{\ensuremath{j^{\mathrm{th}}}\xspace}
+\newcommand{\tth}{\ensuremath{t^{\mathrm{th}}}\xspace}
+
+
+
+% ==============================================
+% REFERENCES
+% ==============================================
+\newcommand{\citet}[1]{\cite{#1}}
+\newcommand{\citep}[1]{\cite{#1}}
+\newcommand{\citecf}[1]{(\cf, \cite{#1})}
+
+\newcommand{\tableref}[1]{Tab.~\ref{#1}}
+\newcommand{\figref}[1]{Fig.~\ref{#1}}
+\newcommand{\vfigref}[1]{Fig.~\vref{#1}}
+\newcommand{\fullfigref}[1]{Fig.~\ref{#1} on page~\pageref{#1}}
+\newcommand{\eqnref}[1]{Eq.~(\ref{#1})}
+\newcommand{\secref}[1]{Sec.~\ref{#1}}
+\newcommand{\thmref}[1]{Theorem~\ref{#1}}
+\newcommand{\propref}[1]{Prop.~\ref{#1}}
+\newcommand{\lemref}[1]{Lemma~\ref{#1}}
+\newcommand{\corref}[1]{Corollary~\ref{#1}}
+\newcommand{\algref}[1]{Alg.~\ref{#1}}
+\newcommand{\lineref}[1]{Line~\ref{#1}}
+\newcommand{\probref}[1]{Problem~(\ref{#1})}
+
+
+% ==============================================
+% LIST ENVIRONMENTS
+% ==============================================
+
+\newcommand{\denselist}{
+    \itemsep -3pt\topsep-8pt\partopsep-8pt
+}
+
+\newcommand{\denselistbib}{
+    \itemsep 0pt\topsep-4pt\partopsep-5pt
+}
+
+\newenvironment{Enum}{
+\vspace{-0.5em}
+\begin{enumerate}
+   \setlength{\itemsep}{0.25em}%{3pt}
+  \setlength{\parskip}{0em}
+  \setlength{\parsep}{0em}}
+{\end{enumerate}\vspace{-0.5em}}
+
+\newcounter{myLISTctr}
+\newcommand{\initOneLiners}{%
+    \setlength{\itemsep}{0pt}
+    \setlength{\parsep }{0pt}
+    \setlength{\topsep }{0pt}
+%      \usecounter{myLISTctr}
+}
+\newenvironment{OneLiners}[1][\ensuremath{\bullet}]
+    {\begin{list}
+        {#1}
+        {\initOneLiners}}
+    {\end{list}}
+
+% ==============================================
+% COMMON SETS, OBJECTS, and VARIABLES
+% ==============================================
+\newcommand{\integers}{\ensuremath{\mathbb{Z}}}
+\newcommand{\nats}{\ensuremath{\mathbb{N}}}
+\newcommand{\reals}{\ensuremath{\mathbb{R}}}
+\newcommand{\Real}{\mathbb R}
+\newcommand{\NonNegativeReals}{\ensuremath{\mathbb{R}_{\ge 0}}}
+
+\newcommand{\eps}{\varepsilon}
+\newcommand{\distrib}{{\mathcal{D}}}
+\newcommand{\family}{{\mathcal{F}}}
+
+% complexity classes
+\newcommand{\class} [1] {\textrm{#1}} % bf or sc or rm?
+\renewcommand{\P} {\class{P}}
+\newcommand{\NP} {\class{NP}}
+
+% ===================================================
+% COMMONLY USED OPERATORS, FUNCTIONS, PARENS, ARROWS
+% ===================================================
+\def \argmax {\mathop{\rm arg\,max}}
+\def \argmin {\mathop{\rm arg\,min}}
+
+
+\newcommand{\paren} [1] {\ensuremath{ \left( {#1} \right) }}
+\newcommand{\curlyparen} [1] {\ensuremath{ \left\{ {#1} \right\} }}
+\newcommand{\bigparen} [1] {\ensuremath{ \Big( {#1} \Big) }}
+\newcommand{\set}[1]{\ensuremath{\left\{#1\right\}}}
+\renewcommand{\Pr}[1]{\ensuremath{\mathbb{P}\left[#1\right] }}
+\DeclareMathOperator{\pr}{Pr} 
+\newcommand{\prob}[1]{\ensuremath{\mathbf{Pr}\left[#1\right] }}
+\DeclareMathOperator{\dist}{Dist}
+\DeclareMathOperator{\dom}{dom}
+
+\newcommand{\norm}[1]{\left\Vert#1\right\Vert}
+\newcommand{\abs}[1]{\left\vert#1\right\vert}
+
+% Expectations
+\newcommand{\expt}[1]{\mathbb{E}\left[#1\right]}
+\newcommand{\E}[1]{\ensuremath{\mathbb{E}\left[#1\right] }}
+\newcommand{\Eunder}[2]{\ensuremath{\mathbb{E}_{#1}\left[#2\right] }}
+\newcommand{\Econd}[2]{\ensuremath{\mathbb{E}\left[  {#1} \ \middle| \ {#2}\right] }}  % conditional expectation
+
+\DeclareMathOperator*{\Var}{Var}
+%\newcommand{\abs}[1]{\ensuremath{\left|#1\right|}}
+\newcommand{\size}[1]{\ensuremath{\left|#1\right|}}
+\newcommand{\ceil}[1]{\ensuremath{\left\lceil#1\right\rceil}}
+\newcommand{\floor}[1]{\ensuremath{\left\lfloor#1\right\rfloor}}
+%\newcommand{\norm}[2]{\ensuremath{\Vert {#1} \Vert_{#2}}}
+\newcommand{\tuple}[1]{\ensuremath{\langle #1 \rangle}}
+\newcommand{\func}[3]{\ensuremath{#1 : #2 \rightarrow #3}}
+\newcommand{\poly}{\operatorname{poly}}
+
+\newcommand{\To}{\longrightarrow}
+
+% ==============================================
+% ASYMPTOTICS
+% ==============================================
+\newcommand{\littleO}[1]{\ensuremath{o\paren{#1}}}
+\newcommand{\bigO}[1]{\ensuremath{O\paren{#1}}}
+\newcommand{\bigTheta}[1]{\ensuremath{\Theta\paren{#1}}}
+\newcommand{\bigOmega}[1]{\ensuremath{\Omega\paren{#1}}}
+
+% ==============================================
+% PSEUDOCODE (these require the package algorithm2e)
+% ==============================================
+ \SetKw {KwEach} {\hspace{-1mm}each}
+\SetKw {KwForEach} {for each}
+\SetKw {KwFrom} {from}
+\SetKw {KwSet} {set}
+\SetKw {KwReturn} {return}
+\SetKw {KwIf} {if}
+\SetKw {KwThen} {then}
+% ==============================================
+% MISCELLANEOUS
+% ==============================================
+\renewcommand{\paragraph}[1]{\vspace{3mm}\noindent{\bf #1.} }
+
+
+
+% ========= Andreas' Macros  ========================
+% ----------------------------------------------------------------
+\vfuzz2pt % Don't report over-full v-boxes if over-edge is small
+\hfuzz2pt % Don't report over-full h-boxes if over-edge is smallq
+% THEOREMS -------------------------------------------------------
+%\newtheorem{thm}{Theorem}%[section]
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+\newtheorem{cor}[theorem]{Corollary}
+%\newtheorem{lem}[thm]{Lemma}
+\newtheorem{prop}[theorem]{Proposition}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{example}[theorem]{Example}
+%\theoremstyle{definition}
+\newtheorem{defn}[theorem]{Definition}
+%\theoremstyle{remark}
+%\newtheorem{rem}[thm]{Remark}
+%\numberwithin{equation}{section}
+
+%-------------------------------------------------------------
+%                       subfigure
+%-------------------------------------------------------------
+
+%% enable subfigures
+%\usepackage{subfigure}
+
+%\newbox\subfigbox
+%\makeatletter
+%  \newenvironment{subfloat}
+%    {\def\caption##1{\gdef\subcapsave{\relax##1}}%
+%     \let\subcapsave\@empty
+%     \setbox\subfigbox\hbox
+%       \bgroup}
+%      {\egroup
+%     \subfigure[\subcapsave]{\box\subfigbox}}
+%\makeatother
+
+
+% ---------------
+
+
+% MISC OTHER MATH STUFF ---------------------
+\newcommand{\cS}{{\mathcal{S}}}
+\newcommand{\cT}{{\mathcal{T}}}
+\newcommand{\cA}{{\mathcal{A}}}
+\newcommand{\cR}{{\mathcal{R}}}
+\newcommand{\cP}{{\mathcal{P}}}
+\newcommand{\cV}{{\mathcal{V}}}
+\newcommand{\cB}{{\mathcal{B}}}
+\newcommand{\cX}{{\mathcal{X}}}
+\newcommand{\cU}{{\mathcal{U}}}
+\newcommand{\cW}{{\mathcal{W}}}
+\newcommand{\cC}{{\mathcal{C}}}
+\newcommand{\cD}{{\mathcal{D}}}
+\newcommand{\cI}{{\mathcal{I}}}
+
+\newcommand{\balpha}{{\mathbf{\alpha}}}
+\newcommand{\ba}{{\mathbf{a}}}
+\newcommand{\bh}{{\mathbf{h}}}
+\newcommand{\bs}{{\mathbf{s}}}
+\newcommand{\bt}{{\mathbf{t}}}
+\newcommand{\bu}{{\mathbf{u}}}
+\newcommand{\bv}{{\mathbf{v}}}
+\newcommand{\bw}{{\mathbf{w}}}
+\newcommand{\bx}{{\mathbf{x}}}
+\newcommand{\by}{{\mathbf{y}}}
+\newcommand{\bz}{{\mathbf{z}}}
+\newcommand{\bZ}{{\mathbf{Z}}}
+
+\newcommand{\hF}{{\widehat{F}}}
+\newcommand{\sF}{\mathcal{\bar{F}}}
+\newcommand{\bF}{{\overline{F}}}
+
+\DeclareMathOperator{\kernel}{\mathcal{K}}
+\DeclareMathOperator{\meanf}{\mathcal{M}}
+
+

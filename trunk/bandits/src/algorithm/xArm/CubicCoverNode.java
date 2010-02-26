@@ -41,12 +41,20 @@ public class CubicCoverNode implements CoverNode{
 		this.rightChild = rChild;
 	}
 
+	/**
+	 * Return the node region's lower bound.
+	 * @return
+	 */
 	public ArrayList<Double> getLowerBounds() {
-		return lowerBounds;
+		return copyBound(lowerBounds); //copy is to enforce immutability of a node's region.
 	}
 
+	/**
+	 * Return the node region's upper bound.
+	 * @return
+	 */
 	public ArrayList<Double> getUpperBounds() {
-		return upperBounds;
+		return copyBound(upperBounds); //copy is to enforce immutability of a node's region.
 	}
 
 	public CubicCoverNode getParent() {
@@ -61,6 +69,14 @@ public class CubicCoverNode implements CoverNode{
 		return rightChild;
 	}
 	
+	private ArrayList<Double> copyBound(ArrayList<Double> in){
+		ArrayList<Double> out = new ArrayList<Double>();
+		for(int i = 0; i< in.size(); ++i){
+			double element = in.get(i);
+			out.add(i,element);
+		}
+		return out;
+	}
 		
 	/**
 	 * 
