@@ -27,7 +27,7 @@ public class RandomPlayer extends Player {
                 }
             }
         }
-        
+
         // Choose a random valid move
         int move_index = this.rand.nextInt(moves.size());
         return moves.get(move_index);

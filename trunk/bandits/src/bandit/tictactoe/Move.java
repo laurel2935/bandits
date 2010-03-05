@@ -2,9 +2,18 @@ package bandit.tictactoe;
 
 public class Move {
 
-    // Stores one move, consisting of a location.
+    // Stores one move, consisting of a location (zero-indexed).
     private int row;
     private int col;
+    
+    /*
+     * Default constructor.
+     */
+    public Move() {
+        this.row = 0;
+        this.col = 0;
+    }
+    
     
     /*
      * Constructor.
