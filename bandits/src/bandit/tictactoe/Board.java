@@ -1,5 +1,7 @@
 package bandit.tictactoe;
 
+import java.util.ArrayList;
+
 /*
  * Implements a tic-tac-toe board.
  */
@@ -97,7 +99,7 @@ public class Board {
     /*
      * Determines if any player has won the game on this board.  Assumes that
      * only one player could have won.
-     * @return The value of the winner, or BLANK if no winner.
+     * @return The value (X/O) of the winner, or BLANK if no winner.
      */
     public int winner() {
         // Check starting positions of a three-in-a-row
@@ -161,5 +163,35 @@ public class Board {
             }
         }
         return board2;
+    }
+    
+    
+    /*
+     * Returns a list of all empty spots on this board.
+     * @return A list of all empty spots on this board.
+     */
+    public ArrayList<Move> emptySquares() {
+        ArrayList<Move> moves = new ArrayList<Move>();
+        // Find all valid moves
+        for (int r = 0; r < Board.BOARD_SIZE; r++) {
+            for (int c = 0; c < Board.BOARD_SIZE; c++) {
+                if (this.getEntry(r, c) == Board.BLANK){
+                moves.add(new Move(r, c));
+                }
+            }
+        }
+        return moves;
+    }
+    
+    /*
+     * Returns the opposite side.
+     * @param side X or O
+     * @return The opposite side.
+     */
+    public static int oppositeSide(int side) {
+        if (side == O)
+            return X;
+        else
+            return O;
     }
 }
