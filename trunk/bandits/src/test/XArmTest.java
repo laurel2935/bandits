@@ -10,7 +10,10 @@ import org.junit.Test;
 
 import algorithm.xArm.XArm;
 
-
+/*
+ * This should probably be retired, in favor of using the 
+ * one dimensional XArmRn
+ */
 public class XArmTest {
 
 	@Before
