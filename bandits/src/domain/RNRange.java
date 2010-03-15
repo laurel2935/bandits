@@ -245,6 +245,7 @@ public class RNRange extends Domain {
 			// TODO Auto-generated method stub
 			subCovers = new ArrayList<CoveringOracle>();
 	    	inputs = new ArrayList<Hypercube>();
+	    	addSubCover(rangeList[0].getMin(),0);
 		}
 
 		@Override
