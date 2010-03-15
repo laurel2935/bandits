@@ -58,11 +58,10 @@ public class RealRange extends Domain {
         return new RealNumber(val);
     }
 
-    private class RealRangeCoveringOracle extends CoveringOracle{
+    public class RealRangeCoveringOracle extends CoveringOracle{
     	
     	// Used to indicate covered regions
     	private class Range{
-    		
     		public double start;
     		public double end;
     		
@@ -79,15 +78,24 @@ public class RealRange extends Domain {
     			return "("+start+", " + end + ")\n";
     		}
     	}
-    	
-    	
+    	// represents index in higher dimensional space
+    	private double position;
     	DoublyLinkedList<Range> coveredRegion;
     	public RealRangeCoveringOracle(){
     		coveredRegion = new DoublyLinkedList<Range>();
     	}
     	
+    	// Used in RNRange
+    	public void setPosition(double pos){
+    		position=pos;
+    	}
+    	public double getPosition(){
+    		return position;
+    	}
+    	
 		@Override
 		public void addElement(DomainElement input, double radius) {
+			//System.out.println("Now adding to RealRange Oracle");
 			if(input instanceof RealNumber){
 				double center = ((RealNumber) input).getValue();
 				coveredRegion.toFirst();
@@ -129,7 +137,9 @@ public class RealRange extends Domain {
 						}						
 					}
 				}
-			}			
+			}else{
+				//System.out.println("Just kidding");
+			}
 		}
 
 		@Override
@@ -157,7 +167,7 @@ public class RealRange extends Domain {
 		}
     	
 		public String toString(){
-			String output = "";
+			String output = position+"\n!";
 			coveredRegion.toFirst();
 			while(!coveredRegion.currentIsNull()){
 				output += coveredRegion.getCurrentValue().toString();
