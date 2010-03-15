@@ -67,7 +67,10 @@ public class RNRange extends Domain {
     @Override
     public CoveringOracle getCoveringOracle() {
         // TODO Auto-generated method stub
-        return new RNRangeCoveringOracle();
+    	if(dim > 1)
+    		return new RNRangeCoveringOracle();
+    	else
+    		return ranges[0].getCoveringOracle();
     }
     
     private class RNRangeCoveringOracle extends CoveringOracle{
