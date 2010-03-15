@@ -25,6 +25,9 @@ average = 0             # Number of points to average around.
 output_filename = None  # Output filename
 plot_title = None       # Title on plot.
 
+# Extra commands to gnuplot.  Here we specify that the y-axis must start at 0.
+extra_commands = ['set yrange [0:]']
+
 # Parse arguments
 for (arg, value) in argList:
     if arg == "--average":
@@ -78,9 +81,11 @@ if average > 1:
     input_file.close()
     new_input_file.close()
     # Make the plot
-    gplotter.plot(new_filename, output_filename, title=plot_title)
+    gplotter.plot(new_filename, output_filename, title=plot_title,
+                  extra_commands=extra_commands)
     os.remove(new_filename)
     
 # Otherwise, just plot what's there
 else:
-    gplotter.plot(input_filename, output_filename, title=plot_title)
+    gplotter.plot(input_filename, output_filename, title=plot_title,
+                  extra_commands=extra_commands)
