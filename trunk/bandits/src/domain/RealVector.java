@@ -51,6 +51,10 @@ public class RealVector implements DomainElement {
 			return 0; // ?? Not sure why this is here, carrying over...
 	}    
 	public String toString(){
-		return value.toString();
+		String output = "(";
+		for(int i=0;i<value.length;i++){
+			output += value[i]+(i==value.length-1?")":", ");
+		}
+		return output;
 	}
 }
