@@ -31,7 +31,9 @@ public class RNRange extends Domain {
         }
         this.rand = new Random();
     }
-
+    public int getDimension(){
+    	return dim;
+    }
     @Override
     public boolean isIn(DomainElement input) {
         // If not a RealVector, can't possibly be in this range.
