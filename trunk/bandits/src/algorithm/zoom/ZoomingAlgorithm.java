@@ -9,6 +9,7 @@ import algorithm.Algorithm;
 
 
 public class ZoomingAlgorithm extends Algorithm {
+	private boolean MultiplePhases = true;
 	private CoveringOracle oracle;
 	private int iph = 1; //phase i
 	private int round = 1; //round number of the given phase
@@ -22,6 +23,12 @@ public class ZoomingAlgorithm extends Algorithm {
 		oracle = domain.getCoveringOracle();
 	}
 	public ZoomingAlgorithm(Domain d, int startPhase){
+		domain = d;
+		oracle = domain.getCoveringOracle();
+		iph = startPhase;
+	}
+	public ZoomingAlgorithm(Domain d, int startPhase, boolean multPhase){
+		MultiplePhases = multPhase;
 		domain = d;
 		oracle = domain.getCoveringOracle();
 		iph = startPhase;
@@ -89,9 +96,11 @@ public class ZoomingAlgorithm extends Algorithm {
 	@Override
 	public DomainElement makeChoice() {
 		// Determine if the phase has ended
-		if(round > Math.pow(2, iph)){
-			iph ++;
-			round = 1;
+		if(MultiplePhases){
+			if(round > Math.pow(2, iph)){
+				iph ++;
+				round = 1;
+			}
 		}
 		// Reset active strategies if a new phase has begun
 		if(round == 1)
