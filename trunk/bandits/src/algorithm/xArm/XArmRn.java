@@ -9,9 +9,27 @@ public class XArmRn extends Algorithm{
 	private final int dimension;
 	private CoverTree<CubicCoverNode> coverTree;
 	private CubicCoverNode pendingNode = null;
+	private final double gamma;
 	
+	/**
+	 * Standarm XArm for R^n
+	 * @param dimension
+	 */
 	public XArmRn(int dimension){
+		this(dimension,0);
+	}
+	
+	/**
+	 * XArm for R^n with randomized exploration
+	 * @param dimension
+	 * @param gamma - probability that the algorithm randomly explores.
+	 */
+	public XArmRn(int dimension, double gamma){
+		assert(dimension > 0);
+		assert(gamma <=1);
+		assert(0 <= gamma);
 		this.dimension = dimension;
+		this.gamma = gamma;
 		this.coverTree = new CubicCoverTree(dimension);
 	}
 
