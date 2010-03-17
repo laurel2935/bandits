@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 
 /**
@@ -90,9 +91,31 @@ public class CubicCoverTree implements CoverTree<CubicCoverNode>{
 	}
 	
 	/**
-	 * 
-	 * @param node
+	 * Randomly walk down the tree until a leaf is encountered
 	 * @return
+	 */
+	public CubicCoverNode pickRandom(){
+		CubicCoverNode returnNode;
+		if(numPicked==0){
+			//first pick
+			returnNode = root;
+			depths.put(root,0);
+		} else {
+			returnNode = findRandomNode(root);
+			//set depth
+			int returnNodeDepth = depths.get(returnNode.getParent()) + 1;
+			depths.put(returnNode, returnNodeDepth);
+		}
+
+		nodes.add(returnNode);
+		numPicked++;
+		return returnNode;
+	}
+	
+	/**
+	 * Walk down the tree, implementing the deterministic selection rule outlined in the paper.
+	 * @param node - current node
+	 * @return - a new descendant of the current node 
 	 */
 	private CubicCoverNode findNewNode(CubicCoverNode node){
 
@@ -131,6 +154,46 @@ public class CubicCoverTree implements CoverTree<CubicCoverNode>{
 				returnNode = findNewNode(node.getRightChild());
 			}
 		}
+		return returnNode;
+	}
+	
+	/**
+	 * 
+	 * @param node
+	 * @return
+	 */
+	private CubicCoverNode findRandomNode(CubicCoverNode node){
+
+		CubicCoverNode returnNode;
+		// randomly choose to go left or right. If the chosen child is null, instantiate it.
+		
+		Random random = new Random();
+		boolean goLeft = random.nextBoolean();
+		
+		if(goLeft){
+			// if left child is null, instantiate it, else, recur
+			if(node.getLeftChild() == null){
+				ArrayList<Double> lowerBounds = copyBound(node.getLowerBounds());
+				ArrayList<Double> upperBounds = computeLeftUpperBounds(node.getLowerBounds(), node.getUpperBounds());
+	 			CubicCoverNode newNode = new CubicCoverNode(dimension, lowerBounds, upperBounds, node);
+	 			node.setLeftChild(newNode);
+				returnNode = newNode;
+			}else{
+				returnNode = findNewNode(node.getLeftChild());
+			}
+		} else {
+			//going right
+			if(node.getRightChild() == null){
+				ArrayList<Double> lowerBounds = computeRightLowerBounds(node.getLowerBounds(), node.getUpperBounds());
+				ArrayList<Double> upperBounds = copyBound(node.getUpperBounds());
+				CubicCoverNode newNode = new CubicCoverNode(dimension, lowerBounds, upperBounds, node);
+				node.setRightChild(newNode);
+				returnNode = newNode;
+			}else{
+				returnNode = findNewNode(node.getRightChild());
+			}
+		}
+		
 		return returnNode;
 	}
 	
