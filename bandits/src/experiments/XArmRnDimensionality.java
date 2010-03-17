@@ -41,8 +41,8 @@ public class XArmRnDimensionality {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		int minDimension = 6;
-		int maxDimension = 10;
+		int minDimension = 1000;
+		int maxDimension = 1000;
 		for(int d =minDimension; d <= maxDimension; d++){
 			RNDistanceBandit rnDistanceBandit = initializeBandit(d);
 
