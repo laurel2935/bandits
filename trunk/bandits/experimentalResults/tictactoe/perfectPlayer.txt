@@ -1,0 +1,5 @@
+Perfect player gets 'regret' around
+.14
+
+Perfect in the sense of never losing, not necessarily minimizing regret.
+e.g. doesn't preferentially play middle square unless guaranteed win, I think.
