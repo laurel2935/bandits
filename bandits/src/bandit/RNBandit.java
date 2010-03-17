@@ -28,16 +28,16 @@ public abstract class RNBandit extends Bandit{
      * @param upper
      * @return
      */
-	private static double[][] createBounds(RealVector lower, RealVector upper){
-		double[] lowerVals = lower.getValue();
-		double[] upperVals = upper.getValue();
-		int d = lowerVals.length;
-		assert(upperVals.length == d);
-		double[][] bounds = new double[d][2];
-		for (int i = 0; i<d; ++i){
-			bounds[i][0] = 0;
-			bounds[i][1] = 1;
-		}
-		return bounds;
-	}
+//	private static double[][] createBounds(RealVector lower, RealVector upper){
+//		double[] lowerVals = lower.getValue();
+//		double[] upperVals = upper.getValue();
+//		int d = lowerVals.length;
+//		assert(upperVals.length == d);
+//		double[][] bounds = new double[d][2];
+//		for (int i = 0; i<d; ++i){
+//			bounds[i][0] = 0; //use lower here
+//			bounds[i][1] = 1; //use upper here
+//		}
+//		return bounds;
+//	}
 }
