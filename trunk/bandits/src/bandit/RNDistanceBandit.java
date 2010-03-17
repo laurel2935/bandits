@@ -22,12 +22,15 @@ public class RNDistanceBandit extends RNBandit{
 		if(point.getDim()!=((RNRange) this.domain).getDimension())
 			throw new Error("Dimension mismatch");
 		this.center = point;
+		this.reward_max = 1;
 	}
+	
 	@Override
 	public double reward(DomainElement input) {
 		// This function is a max when the distance is 0. Elsewhere, it decreases according to distance.
 		// Since distance is always nonnegative, this will be inbetween 0 and 1.
 		return 1./(1+input.distanceTo(center));
 	}
+
 
 }
