@@ -10,6 +10,7 @@ public class ExponentialBandit extends RealBandit {
 		super(0,1);
 		this.mu = mu;
 		this.sigmaSq = sigmaSq;
+		this.reward_max = 1;
 	}
 
 	@Override

@@ -22,13 +22,13 @@ public class Main {
         NoisyBandit noise = new NoisyBandit(bin, .5, 1);
 */
         FullTicTacToeBandit toe = new FullTicTacToeBandit();
-
+        
         // Make algorithm
         int arms = 1000;
         Algorithm test_alg = new DiscretizedEpsilonGreedy(toe.domain, arms);
 
         // Run
-        int num_plays = 1000000;
+        int num_plays = 100;
         Trial test_run = new Trial(test_alg, toe, num_plays, "epsgredfulltoe.txt"); 
         test_run.setWriteInterval(1);
         test_run.run();

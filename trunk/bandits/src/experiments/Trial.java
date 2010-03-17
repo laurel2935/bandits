@@ -1,4 +1,4 @@
-package bandits;
+package experiments;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -12,9 +12,6 @@ import algorithm.Algorithm;
  * Represents a trial - i.e. an algorithm running on a problem.
  */
 public class Trial {
-	//Debug flag to toggle debug features
-	private static final boolean DEBUG = true;
-	
     // The algorithm to use.
     public Algorithm alg;
     
@@ -106,12 +103,11 @@ public class Trial {
                     e.printStackTrace();
                 }
             }
-            if(DEBUG){
-            	// Test/debug code.
-            	if (i % (Math.max(this.total_rounds / 100,1)) == 0) {
-            		System.out.println("Average regret after move " + (i + 1) + ": "
-            				+ average_regret);
-            	}
+            
+            // Test/debug code.
+            if (i % (Math.max(this.total_rounds / 100,1)) == 0) {
+                System.out.println("Average regret after move " + (i + 1) + ": "
+                        + average_regret);
             }
         }
         
@@ -131,7 +127,7 @@ public class Trial {
      * Sets writeInterval.
      * @param newInterval The new writing interval
      */
-    public void setWriteInterval(int newInterval) {
+    void setWriteInterval(int newInterval) {
         this.writeInterval = newInterval;
     }
     
