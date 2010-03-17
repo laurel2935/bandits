@@ -11,8 +11,8 @@ public class XArmSmoothnessExperiment {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		double mu = 0.5;
-		double sigmaSq = 1;
+		double mu = 0.271;
+		double sigmaSq = 0.001;
 		ExponentialBandit exponentialBandit = new ExponentialBandit(mu, sigmaSq);  
 		
 		
@@ -23,7 +23,7 @@ public class XArmSmoothnessExperiment {
 		// Run
 		int numIterations = 10000;
 		String dataDir = "experimentalResults/";
-		String filename = dataDir+"xArmSmoothness_one.txt";
+		String filename = dataDir+"scratch.txt";
 		
 		Trial trial = new Trial(alg, exponentialBandit, numIterations, filename); 
 		trial.setWriteInterval(1);

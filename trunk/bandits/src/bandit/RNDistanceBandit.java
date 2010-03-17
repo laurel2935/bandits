@@ -8,8 +8,13 @@ import domain.RealVector;
  * and decreases uniformly with distance.
  */
 public class RNDistanceBandit extends RNBandit{
-	// maximum value
-	RealVector center;
+	private final RealVector center;
+	
+	/**
+	 * 
+	 * @param point Point from which distance is measured.
+	 * @param bounds What is rows/columns?
+	 */
 	public RNDistanceBandit(RealVector point, double[][] bounds){
 		super(bounds);
 		if(!this.domain.isIn(point))
