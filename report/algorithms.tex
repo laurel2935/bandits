@@ -1,0 +1,47 @@
+\section{Algorithms}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Hierarchical Optimistic Optimization Algorithm}
+$\mathcal{X}$-armed stuff here.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Zooming Algorithm}
+Zooming stuff here.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Discretization Algorithms}
+To test the $\mathcal{X}$-armed and Zooming algorithms, we have implemented
+the $\epsilon$-greedy, UCB1, and Exp3 finite-armed algorithms for
+the case where whatever domain our bandit problem is over is discretized
+into some finite number $K$ points.  A brief description of each algorithm
+is now given.
+
+\subsubsection{$\epsilon$-Greedy}
+In round $t$, if $1 \leq t \leq K$ then play arm $t$.  Otherwise, play
+randomly with probability $\epsilon$ and the arm with the best running
+average otherwise.  We have implemented this algorithm using
+$\epsilon = \frac{K}{t}$.
+
+\subsubsection{UCB1}
+In round $t$, if $1 \leq i \leq K$ then play arm $i$.  Otherwise, play
+the arm that maximizes the quantity
+\[
+	\bar{r_i} + \sigma \sqrt{\frac{2 \log(t)}{p_i}}
+\]
+Where $\bar{r_i}$ is the average reward of arm $i$ so far, $p_i$ is the 
+number of times arm $i$ has been played so far, and $\sigma$ is a parameter
+that can be chosen to influence how much exploration is done.
+
+\subsubsection{Exp3}
+Initialize $w_i(1) = 1$ for all $1 \leq i \leq K$.  In round $t$, play
+arm $i$ with probability
+\[
+	p_i(t) = \frac{\epsilon}{K} + (1 - \epsilon) \frac{w_i(t)}{\sum_j w_j(t)}
+\]
+With $i$ the arm that was played, update
+\[
+	w_i(t+1) = w_i(t)\gamma^{\frac{\epsilon r_i(t)}{K p_i(t)}}
+\]
+where $r_i(t)$ is the reward recieved, and set $w_j(t+1) = w_j(t)$ for all
+other arms $j$.  $\gamma$ is a parameter that can be chosen to influence how
+much exploration is done.  As in the $\epsilon$-greedy algorithm, we use
+$\epsilon = \frac{K}{t}$.
