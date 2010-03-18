@@ -1,5 +1,24 @@
 \section{Introduction}
+There are a number of natural bandit problems that arise for which the
+number of possible arms is infinite.  For example, consider the problem of
+sensor placement for maximum coverage -- in some given area there can be an
+infinite number of locations to place a sensor, and with multiple sensors the
+problem only becomes even higher-dimensional.  Alternatively, consider the
+problem of determining the optimal parameter of some physical system, where
+this parameter is simply a real number in some range.  In both cases,
+evaluating a reward function can be quite costly, and as we have limited
+feedback, this is a bandit problem.  However, the standard finite-armed
+bandit algorithms are not suitable when there are an infinite number of
+possible arms to choose.
 
-This is the introduction, where I cite a bunch of
-things. \cite{auer2002finite} \cite{xarms08} \cite{kleinberg2008multi}
-\cite{auer1995gambling} \cite{pandey2007multi}.
+One way to make them handle the infinite-armed
+case is to simply discretize whatever domain our bandit problem is over
+into some finite number of points, then run a standard finite-armed bandit
+algorithm on those points.  However, this does not account for any
+possible correlation between the points that were chosen -- i.e. any possible
+information gain from reward function smoothness is lost.  With that in
+mind, bandit algorithms have been developed particularly for the case in
+which there are an infinite number of arms.  Here we present two such
+algorithms, the Hierarchical Optimistic Optimization algorithm and the
+Zooming algorithm, and then we present an analysis of how these algorithms
+compare with various discretization algorithms over several test case.
