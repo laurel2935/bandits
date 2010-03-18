@@ -5,7 +5,43 @@ $\mathcal{X}$-armed stuff here.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Zooming Algorithm}
-Zooming stuff here.
+When the number of arms is infinite, additional assumptions are needed
+about the relationship between the arms. For instance, arms
+that are \emph{close} should produce similar results. The Zooming
+Algorithm is defined to work in any example where the arms form a
+metric space. In each phase, certain arms are chosen to be
+\emph{active}, and the algorithm chooses which arm to play from these
+active arms.
+
+The Zooming Algorithm is composed of multiple phases, each of which is
+composed of $2^{i_{ph}}$ rounds, where $i_{ph}$ is the current phase
+number. In a given round, you \emph{activate} an arm if that arm is
+not covered by another arm. Each arm covers a radius defined by
+$r_t(v):=\sqrt{8*i_{ph}/(2+n_t(v)))}$ where $v$ is the active arm, and
+$n_t(v)$ is the number of times a given arm has been chosen at time
+$t$. Each time an arm is played, its radius shrinks, and at the
+beginning of each round, you \emph{activate} arms until you have a
+complete covering using a \emph{covering oracle}. This oracle can
+either return an uncovered arm, or state that there is no such
+arm. After the space is covered, you play the arm with the optimal
+index, defined as $I_t(v):=\mu_t(v)+2*r_t(v)$
+
+Inbetween different phases, the Zooming Algorithm does not carry
+over information. All that changes is $i_{ph}$. As $i_{ph}$ increases,
+the index is effected increasingly more by how many times an arm has
+been played. This means that earlier rounds have indices that are more
+influenced by the $\mu_t(v)$, and will thus tend to exploit their earlier
+finds more, while later rounds will perform more exploration before zeroing
+in on the optimal arm. Given specific knowlege about the problem at hand,
+this value could be optimized, allowing you to run the zooming algorithm
+for a specific phase number. 
+
+The runtime of the Zooming Algorithm depends very heavily on how the
+covering oracle chosen behaves. This can be problematic, since the problem
+is np-complete for the problem of hypercube coverings. In high dimensions,
+the oracle can become quite expensive.
+
+This should reference A Covering Problem for Hypercubes\\J¨org Hoffmann\\Sebastian Kupferschmid
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Discretization Algorithms}
