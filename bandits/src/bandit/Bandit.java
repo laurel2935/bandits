@@ -31,15 +31,15 @@ public abstract class Bandit {
 
     /*
      * The actual cost function.
-     * @param input A valid real-valued input.
+     * @param input A valid input.
      * @return The reward associated with the input.
      */
     abstract public double reward(DomainElement input);
         
     /*
      * Checks whether a given input is valid or not.
-     * @param input A real-valued input.
-     * @return True if the input is in the permissible range, False otherwise.
+     * @param input An input.
+     * @return True if the input is in the permissible domain, False otherwise.
      */
     private boolean validInput(DomainElement input) {
         return domain.isIn(input);
