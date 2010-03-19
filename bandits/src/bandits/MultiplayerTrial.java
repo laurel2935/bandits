@@ -152,8 +152,9 @@ public class MultiplayerTrial {
             if(DEBUG){
             	// Test/debug code.
             	if (i % (Math.max(this.total_rounds / 100,1)) == 0) {
-            		System.out.println("Average regret after move " + (i + 1) + ": "
-            				+ average_regret);
+            	    for (int j = 0; j < this.players; j++)
+            	        System.out.println("Average regret after move " +
+            	                (i + 1) + ": " + average_regret[j]);
             	}
             }
         }
