@@ -1,0 +1,60 @@
+\section{Appendix}
+
+the appendix!
+
+\subsection{HOO Algorithm}
+TODO: and cite the arXiv paper
+
+\begin{algorithm}
+  \SetKwData{Left}{left}\SetKwData{This}{this}\SetKwData{Up}{up}
+  \SetKwFunction{Union}{Union}\SetKwFunction{FindCompress}{FindCompress}
+  \SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
+  \Input{A covering tree}
+  \Output{sequence of no regret choices}
+  \BlankLine
+  %initialization
+  $ \cT \leftarrow \{ (0,1) \}$;
+  $B_{1,2} \leftarrow \infty$ \;
+  $B_{2,2} \leftarrow \infty$ \;
+  \For{$i\leftarrow 1$ \KwTo $n$}{
+    $(h,i) \leftarrow (0,1)$ \;
+    $P \leftarrow \{ (0,1) \} $\;
+    \While{$(h,i) \in \cT$}{
+      \uIf{$B_{h+1, 2i-1} > B_{h+1,2i}$}{
+        %if
+        $(h,i) \leftarrow (h+1, 2i-1)$ \;
+      }
+      \uElseIf{$B_{h+1, 2i-1} < B_{h+1,2i}$}{
+         $(h,i) \leftarrow (h+1, 2i)$ \;
+      }
+      \Else{
+        $Z \sim Ber(0.5)$ \;
+         $(h,i) \leftarrow (h+1, 2i - Z)$ \;
+      }
+      $P \leftarrow P \cup \{ (h,i) \}$ \;
+    }
+    $(H,I) \leftarrow (h,i)$\;
+    Choose arm $X$ in $\cP _{H,I}$ and play it\;
+    Receive reward $Y$\;
+    $\cT \leftarrow \cT \cup \{ (H,I) \}$ \;
+    \ForAll{$(h,i) \in P$}{
+      $T_{h,i} \leftarrow T_{h,i} + 1$\;
+      $\hat{\mu}_{h,i} \leftarrow (1 - \frac{1}{T_{h,i}})
+      \hat{\mu}_{h,i} + \frac{Y}{T_{h,i}}$\;
+    }
+    \ForAll{$(h,i) \in P$}{
+      $U_{h,i} \leftarrow \hat{\mu}_{h,i} + \sqrt{(2 \ln n) / T_{h,i}}
+      + \nu_1 \rho^{h}$\;
+    }
+    $B_{H+1, 2I-1} \leftarrow \infty$\;
+    $B_{H+1, 2I} \leftarrow -\infty$\;
+    $\cT' \leftarrow \cT$\;
+    \While{$\cT' \neq \{ (0,1) \}$}{
+      $(h,i) \leftarrow$ {\sc leaf}$(\cT')$\;
+      $B_{h,i} \leftarrow \min \{ U_{h,i}, \max B_{h+1,
+            2i-1},B_{h+1, 2i}  \}$ \;
+      $\cT' \leftarrow \cT' \setminus \{ (h,i) \} $ \;
+    }
+  }
+  \caption{Hierarchical Optimistic Optimization}\label{alg:hoo}
+\end{algorithm}
