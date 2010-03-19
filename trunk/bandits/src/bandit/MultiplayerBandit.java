@@ -102,5 +102,13 @@ public abstract class MultiplayerBandit {
     public Domain[] getDomain() {
         return this.domains;
     }
+    
+    /*
+     * Returns the domain that the given player is over.
+     * @param player The player whose domain we want to get.
+     */
+    public Domain getDomain(int player) {
+        return this.domains[player];
+    }
 
 }
