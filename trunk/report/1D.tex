@@ -1,5 +1,6 @@
 % One-dimensional data
 \subsection{One Dimension}
+\subsubsection{Simple Reward Function}
 As a very basic proof of concept, we ran the algorithms on the reward
 function $r(x) = x$ over the unit interval [0,1].
 
@@ -22,6 +23,8 @@ the number of rounds so far.  We can also see the characteristic bumps of
 the Zooming algorithm, which are indicative of the fact that the Zooming
 algorithm does not carry over information between phases.
 
+
+\subsubsection{Noisy Reward Function}
 Now we shall add some noise to our reward function.  The new reward
 function is $r(x) = b(n_{0,1}(x))$, where $b(x) = 1$ with probability
 $x$ and is 0 otherwise and $n_{\alpha_,\beta}(x)$ is $x$ times a random
