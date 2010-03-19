@@ -1,0 +1,6 @@
+Square weight set-up
+40000 rounds
+
+No clear convergence.
+
+time: 1626.369139723 seconds

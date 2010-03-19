@@ -1,0 +1,19 @@
+Square weight set-up
+850 rounds.
+
+Although the zooming algorithm is deterministic, it's playing against a
+non-deterministic player, which effects the rewards, and thus the final set
+of weights.  Wouldn't matter if we had tons of trials, but it does since we
+only have 850.
+
+Got this in one run of 850
+-1.0                 0.9466570535691503 0.992383450125075
+ 0.9466570535691503  0.8516401995451028 0.9466570535691503
+-0.9507095425318772 -1.0                0.0 
+
+Different run:
+-1.0                 0.9466570535691503  0.9959475110372731
+ 0.9466570535691503  0.9466570535691503 -1.0
+-0.9507095425318772 -1.0                 0.0 
+
+Time taken: 255.293389244 s

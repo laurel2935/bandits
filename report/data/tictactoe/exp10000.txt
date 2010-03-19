@@ -1,0 +1,8 @@
+Square weight set-up
+10,000 arms
+1,000,000 plays
+
+Final weights:
+Did not converge
+
+Time taken: 363.314744891 s (estimated from alter)
