@@ -26,6 +26,14 @@ either return an uncovered arm, or state that there is no such
 arm. After the space is covered, you play the arm with the optimal
 index, defined as $I_t(v):=\mu_t(v)+2*r_t(v)$
 
+\begin{figure}[!ht]
+  \begin{center}
+    \includegraphics[width=5 in]{figures/ZoomingRadius.png}
+     \caption{Arms cover less area the more they are played. The phase number only changes the scaling.}
+     \label{fig:zoomphase}
+  \end{center}
+\end{figure}
+
 Inbetween different phases, the Zooming Algorithm does not carry
 over information. All that changes is $i_{ph}$. As $i_{ph}$ increases,
 the index is effected increasingly more by how many times an arm has
