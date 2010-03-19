@@ -44,6 +44,16 @@ in on the optimal arm. Given specific knowlege about the problem at hand,
 this value could be optimized, allowing you to run the zooming algorithm
 for a specific phase number. 
 
+\begin{figure}[!ht]
+  \begin{center}
+    \includegraphics[width=5 in]{figures/Phase_Comparison.png}
+     \caption{Here, the Zooming Algorithm was modified to run indefinitely on a specific phase number. As you can see, as a result of later phases doing more exploration, and having larger initial radii for their arms, later phases take longer to converge than earlier phases. The algorithm was run on a 2 dimensional domain from 0 to 1 where reward is maximized at the point $(.3,.3)$. Reward was given by $\frac{1}{1+\mathrm{d}(v,(.3,.3))}$}
+     \label{fig:zoomphase}
+  \end{center}
+\end{figure}
+
+
+
 The runtime of the Zooming Algorithm depends very heavily on how the
 covering oracle chosen behaves. This can be problematic, since the problem
 is np-complete for the problem of hypercube coverings  \cite{Hoffmann05acovering} . In high dimensions,
