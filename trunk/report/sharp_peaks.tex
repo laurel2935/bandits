@@ -1,24 +1,35 @@
 % Sharp peak examples
 \subsubsection{Sharply Peaking Reward Functions}
-In general, problems where the reward function is sharply peaked in a single neighborhood
-are difficult to handle. We wish to see how these algorithms perform under these situations.
+In general, problems where the reward function is sharply peaked in a
+single neighborhood are difficult to handle. We wish to see how these
+algorithms perform under these situations.
 
-The bandit problem we're using to analyze this performance is attempting to locate a specific
-point on the unit interval, $\mathbf{p}$ where our reward is given by a gaussian function of a particular width.\\
-For point  $\mathbf{p}$ , the reward function is:
+The bandit problem we're using to analyze this performance is
+attempting to locate a specific point on the unit interval,
+$\mathbf{p}$ where our reward is given by a Gaussian function of a
+particular width.\\ For point $\mathbf{p}$ , the reward function is:
 \[
 	r_p(\mathbf{x}) = \exp{\frac{-(x-p)^2}{2\sigma}}
 \]
-Note that this reward function has value 1 when
-$\mathbf{x} = \mathbf{p}$, and gets arbitarily close to 0.  It gets
-increasingly sharp as $\sigma$ increases.  We plot the
-$\mathcal{X}$-armed algorithm against the discretized $\epsilon$-greedy
-algorithm in Figure TODO.
+Note that this reward function has value 1 when $\mathbf{x}
+= \mathbf{p}$, and gets arbitrarily close to 0.  It gets increasingly
+sharp as $\sigma$ increases.  We plot the $\mathcal{X}$-armed
+algorithm against the discretized $\epsilon$-greedy algorithm in
+\figref{fig:smoothness}.
 
-The Zooming Algorithm outperforms discretized $\epsilon$-greedy as well.
-For these graphs, the Zooming Algorithm was restricted to staying on the first phase,
-and the initial covering radius of each arm was decreased to allow for a more reasonable
-initial covering.
+\begin{figure}[!ht]
+  \begin{center}
+    \includegraphics[width=\figwidth]{figures/smoothnessComparison_linear_labelled}
+     \caption{Comparison of HOO and $\epsilon$-greedy algorithms on
+       mean-payoff functions of various smoothness.}
+     \label{fig:smoothness}
+  \end{center}
+\end{figure}
+
+The Zooming Algorithm outperforms discretized $\epsilon$-greedy as
+well.  For these graphs, the Zooming Algorithm was restricted to
+staying on the first phase, and the initial covering radius of each
+arm was decreased to allow for a more reasonable initial covering.
 
 
 \begin{figure}[!ht]
@@ -39,6 +50,7 @@ initial covering.
 
 
 
-These figures show that while discretization algorithms may converge faster, they lack
-the resolution in their coverage to detect narrowly peaked maxima, while the algorithms
-that progressively refine their coverage will eventually detect them.
+These figures show that while discretization algorithms may converge
+faster, they lack the resolution in their coverage to detect narrowly
+peaked maxima, while the algorithms that progressively refine their
+coverage will eventually detect them.
