@@ -33,15 +33,22 @@ The HOO algorithm requires an infinite binary tree where each node
 represents a subset of $\cX$. We denote the $i^{th}$ node at level
 $h$ as $(h,i)$, and its two children as $(h+1, 2i-1)$ and $(h+1,
 2i)$. The subset of $\cX$ associated with node $(h,i)$ is denoted
-as $\cP_{(h,i)}$.
+as $\cP_{h,i}$.
 
 The covering tree is required to satisfy two properties:
 \begin{align*}
-  \cP_{(1,0)} &= \cX\\
-  \cP_{(h,i)} &= \cP_{(h+1,2i-1)} \cup \cP_{(h+1,2i)}
+  \cP_{(1,0} &= \cX\\
+  \cP_{h,i} &= \cP_{h+1,2i-1} \cup \cP_{h+1,2i}
 \end{align*}
 
-TODO: Can talk about diameters, and size of coverings here.
+It is assumed that $\cX$ has a dissimilarity measure
+$l(\cdot,\cdot)$. The diameter of a subset $A \subseteq \cX$ is
+defined as $\sup_{x,y \in A}l(x,y)$. It is further assumed that there
+are values $\rho < 1$, $\nu_1, \nu_2 > 0$ s.t. for all integers $h
+\geq 0$ and $i = 1,2, \dots, 2^h$, the diameter of $\cP_{h,i}$ is at
+most $\nu_1 \rho^h$ and that it contains an open ball of radius $\nu_2
+\rho^h$. This assumption specifies that the volume of the subset
+$\cP_{h,i}$ shrinks geometrically with the depth of node $(h,i)$.
 
 \subsubsection{HOO Algorithm}
 The HOO algorithm operates by maintaining a collection of subsets
@@ -112,15 +119,30 @@ granularity around subsets of $\cX$ with low expected reward.
   \caption{Hierarchical Optimistic Optimization}\label{alg:hooShort}
 \end{algorithm}
 
-Full pseudo-code is given in \algref{alg:hoo}.
+%``Node selection works by comparing $B$-values and always choosing
+%the node with the highest $B$-value.''
 
-``Node selection works by comparing $B$-values and always choosing the
-node with the highest $B$-value.''
-
+The following values are associated with each node $(h,i)$:
 \begin{align*}
-  \hat{\mu}_{h,i} &= \text{avg. reward received by } v_{h,i} \text{
-    and its descendants.}\\
+  N_{h,i}(n) &= \text{number of times node } (h,i) \text{ or its
+    descendants was selected, up to time } n\\ 
+  \hat{\mu}_{h,i}(n) &= \text{avg. reward received by } v_{h,i} \text{
+    and its descendants up to time n.}\\
+  U_{h,i}(n) &= \hat{\mu}_{h,i}(n) + \sqrt{\frac{2 \ln n}{N_{h,i}(n)}}
+  + \nu_1 \rho^h\\
+  B_{h,i}(n) &= \min\{ U_{h,i}(n), \max\{ B_{h+1,2i-1}, B_{h+1,2i}\} \}
 \end{align*}
+
+During the descent from root to leaf, the algorithm always descends to
+the child of larger $B$ value, with ties broken arbitrarily. Nodes
+which have not yet been added to the tree (i.e., the ``children'' of a
+current leaf) are given a $B$-value of $\infty$. The operation
+descendToLeaf returns a new leaf. An arm is drawn from
+$\cP_{leaf}$. Once the reward $Y$ of this arm is received, the above
+values $N$, $\hat{\mu}$, $U$, and $B$ are updated for all nodes
+between the root and the new leaf.
+
+Full pseudo-code is given in \algref{alg:hoo}.
 
 \subsubsection{Regret Bounds}
 The mean-payoff function $f$ is assumed to satisfy the condition that
@@ -134,7 +156,10 @@ called \emph{weakly Lipschitz}. Note that this amounts to requiring
 condition at other points. The further a point is from the maxima, the
 looser is the requirement on smoothness.
 
-
+The expected regret of the HOO algorithm is bounded, up to a
+logarithmic factor, by $\sqrt{n}$. The rate of growth depends on
+the values $\nu_1$, $\nu_2$, and $\rho$; specifically, the rate of
+growth does not depend on the dimensionality of the space.
 
 \subsubsection{Implementation}
 The primary component of the implementation is the cover tree. When
@@ -147,6 +172,7 @@ $kD$-tree data structure. While this is sufficient for such spaces as
 the unit hypercube, it is also sufficient for several other spaces
 which can be defined by points in a unit hypercube, such as an
 n-dimensional sphere (in polar coordinates) or torus.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Zooming Algorithm}
