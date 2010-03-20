@@ -30,16 +30,68 @@ maxima of the mean-reward function $f$.
 
 \subsubsection{Covering Tree}
 The HOO algorithm requires an infinite binary tree where each node
-represents a subset of $\cX$. Denoting the $i^{th}$ node at level $h$
-as $v_{h,i}$, we will abuse notation and identify a node with the
-subset of $\cX$ it represents. With this notation, the covering tree
-is required to satisfy two properties:
+represents a subset of $\cX$. We denote the $i^{th}$ node at level $h$
+as $(h,i)$, and its two children as $(h+1, 2i-1)$ and $(h+1, 2i)$. The
+subset of $\cX$ associated with node $(h,i)$ is denoted as $\cP_{(h,i)}$.
+
+The covering tree is required to satisfy two properties:
 \begin{align*}
-  v_{1,0} &= \cX\\
-  v_{h,i} &= \text{left child of } v_{h,i} \cup \text{right child of} v_{h,i}
+  \cP_{(1,0} &= \cX\\
+  \cP_({h,i}) &= \cP_({h+1,2i-1}) \cup \cP_({h+1,2i})
 \end{align*}
 
 \subsubsection{HOO Algorithm}
+
+\begin{algorithm}
+  \SetKwData{Left}{left}\SetKwData{This}{this}\SetKwData{Up}{up}
+  \SetKwFunction{Union}{Union}\SetKwFunction{FindCompress}{FindCompress}
+  \SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
+  \Input{A covering tree}
+  \Output{Sequence of no regret choices}
+  \BlankLine
+  %initialization
+  $ \cT \leftarrow \{ (0,1) \}$\;
+  %$B_{1,2} \leftarrow \infty$ \;
+  %$B_{2,2} \leftarrow \infty$ \;
+  \For{$i=1,2,\dots$}{
+    % descend the tree
+    currentNode $\leftarrow$ root\;
+    \While{currentNode has been instantiated}{
+      $B_{left} \leftarrow$ Bvalue(leftChild(currentNode))\;
+      $B_{right} \leftarrow$ Bvalue(rightChild(currentNode))\;
+      \uIf{$B_{left} > B_{right}$}{
+        currentNode $\leftarrow$ leftChild(currentNode)\;
+      }
+      \Else{
+        currentNode $\leftarrow$ rightChild(currentNode)\;
+      }
+    }
+    instantiate currentNode\;
+    Choose arm $x$ in $\cP_{currentNode}$ and play it\;
+    Receive reward $Y$\;
+    $\cT \leftarrow \cT \cup$ currentNode \;
+    \ForAll{$(h,i) \in$ pathToRoot(currentNode)}{
+      $T_{h,i} \leftarrow T_{h,i} + 1$\;
+      $\hat{\mu}_{h,i} \leftarrow (1 - \frac{1}{T_{h,i}})
+      \hat{\mu}_{h,i} + \frac{Y}{T_{h,i}}$\;
+    }
+    \ForAll{$(h,i) \in$ pathToRoot(currentNode)}{
+      $U_{h,i} \leftarrow \hat{\mu}_{h,i} + \sqrt{(2 \ln n) / T_{h,i}}
+      + \nu_1 \rho^{h}$\;
+    }
+    %$B_{H+1, 2I-1} \leftarrow \infty$\;
+    %$B_{H+1, 2I} \leftarrow -\infty$\;
+    %$\cT' \leftarrow \cT$\;
+    \While{$\cT' \neq \{ (0,1) \}$}{
+      $(h,i) \leftarrow$ {\sc leaf}$(\cT')$\;
+      $B_{h,i} \leftarrow \min \{ U_{h,i}, \max B_{h+1,
+            2i-1},B_{h+1, 2i}  \}$ \;
+      $\cT' \leftarrow \cT' \setminus \{ (h,i) \} $ \;
+    }
+  }
+  \caption{Hierarchical Optimistic Optimization}\label{alg:hooShort}
+\end{algorithm}
+
 Full pseudo-code is given in \algref{alg:hoo}.
 
 ``Node selection works by comparing $B$-values and always choosing the
