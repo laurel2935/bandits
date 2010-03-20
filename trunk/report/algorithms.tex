@@ -2,15 +2,15 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Hierarchical Optimistic Optimization Algorithm}
 
-The Hierarchical Optimistic Optimization (HOO) algorithm is a
-no-regret algorithm for the case when the ``arms'' form a generic
-measurable space $\cX$, and when each arm $x \in \cX$ is associated
-with a fixed distribution $f(x)$ of rewards with finite support. Much
-like the UCB algorithm, the HOO algorithm seeks to accurately estimate
-the reward function where it has high value, while loosely estimating
-the reward function where it has low value. This is accomplished by
-incrementally building a covering of the space $\cX$ with fine
-subdivisions where rewards are high, and coarse subdivisions
+The Hierarchical Optimistic Optimization (HOO, a.k.a. $\cX$-arms)
+algorithm is a no-regret algorithm for the case when the ``arms'' form
+a generic measurable space $\cX$, and when each arm $x \in \cX$ is
+associated with a fixed distribution $f(x)$ of rewards with finite
+support. Much like the UCB algorithm, the HOO algorithm seeks to
+accurately estimate the reward function where it has high value, while
+loosely estimating the reward function where it has low value. This is
+accomplished by incrementally building a covering of the space $\cX$
+with fine subdivisions where rewards are high, and coarse subdivisions
 elsewhere. These coverings are maintained in a tree data structure
 called a \emph{covering tree}. In the covering tree, the root covers
 all of $\cX$; other nodes represent finer subsets of $\cX$. A
