@@ -1,0 +1,45 @@
+\section{Summary}
+From the examples we have shown, one can make several observations
+concerning the overall behavior of the algorithms and in which
+situations certain algorithms would be preferred.
+
+In any case, if there is a real concern for making sure the average regret
+goes to 0 in the long run, and not merely some low, yet non-zero, value, then
+none of the discretization algorithms should be used.  This is due simply to
+the inherent bias in choosing a set of points to represent the entire domain.
+In this case, the
+$\mathcal{X}$-armed algorithm appears to be better than the Zooming algorithm.
+In one dimension, this is due to the fact that the $\mathcal{X}$-armed
+algorithm converges more quickly, at the expense of a higher computational
+cost.  It may still be true in higher dimensions that the $\mathcal{X}$-armed
+algorithm outperforms the Zooming algorithm, but due to the much larger amount
+of time required to explore higher dimensions, combined with the computational
+complexity of both algorithms, it is hard
+to say for certain.  In high dimensions, though, it can be said for certain
+that the Zooming algorithm is completely impractical due to the computational
+cost of the covering oracle.
+
+If we are not too concerned with actually achieving 0 average regret, but
+rather only with achieving small average regret, the choice of algorithm is
+less clear.  In higher dimensions, the Zooming algorithm will still take
+infeasibly long to compute, and the $\mathcal{X}$-armed algorithm tends to
+take a while to explore, so unless a large number of rounds are available,
+a discretization algorithm is probably the best algorithm to use, with
+the number of arms scaled according to how many rounds are available.
+
+In one dimension, if very few rounds are allowed, then the $\epsilon$-greedy
+with a small number of arms is likely to work best, as even in one dimension
+the $\mathcal{X}$-armed algorithm takes \emph{some} time to explore.  If
+we are allowed a larger number of rounds (on the order of 10,000 or so), the
+$\mathcal{X}$-armed algorithm and the discretized $\epsilon$-greedy
+algorithm, with a suitable number of arms, are the algorithms to choose.  With
+a very large number of rounds available, the computational complexity of the
+$\mathcal{X}$-armed algorithm makes it infeasible, and we can either go with
+one of the discretization algorithms with a large number of arms or the
+Zooming algorithm, for which average regret should go to 0 eventually.
+
+Among the discretization algorithms, in all cases that we have been able to
+test, the $\epsilon$-greedy algorithm converges swiftest.  By modifying
+$\sigma$ and $\gamma$ in the UCB1 and Exp3 algorithms, though, we can speed up
+convergence and make them perform nearly as well as the $\epsilon$-greedy
+algorithm.
