@@ -1,22 +1,24 @@
 package algorithm.xArm;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import algorithm.Algorithm;
 import domain.RealVector;
 
 public class XArmRn extends Algorithm{
 	private final int dimension;
+	private final double gamma;
 	private CoverTree<CubicCoverNode> coverTree;
 	private CubicCoverNode pendingNode = null;
-	private final double gamma;
+	
 	
 	/**
 	 * Standarm XArm for R^n
 	 * @param dimension
 	 */
 	public XArmRn(int dimension){
-		this(dimension,0);
+		this(dimension,0); // constructor chaining.
 	}
 	
 	/**
@@ -36,8 +38,16 @@ public class XArmRn extends Algorithm{
 	@Override
 	public RealVector makeChoice() {
 		assert(pendingNode == null);
-		pendingNode = coverTree.pick();
 		
+		Random random = new Random();
+		double val = random.nextDouble();
+		if(val >= gamma){
+			// standard selection with prob 1-gamma
+			pendingNode = coverTree.pick();
+		}else{
+			// explore with prob gamma
+			pendingNode = coverTree.pickRandom();
+		}
 		// choose (any way you want) an element covered by the node
 		// i.e. choose the midpoint of its covering region:
 		// TODO: generalize this...

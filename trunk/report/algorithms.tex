@@ -48,7 +48,7 @@ node with the highest $B$-value.''
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Zooming Algorithm}
 When the number of arms is infinite, additional assumptions are needed
 about the relationship between the arms. For instance, arms that are
@@ -113,27 +113,29 @@ the oracle can become quite expensive.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Discretization Algorithms}
-To test the $\mathcal{X}$-armed and Zooming algorithms, we have implemented
-the $\epsilon$-greedy, UCB1, and Exp3 finite-armed algorithms for
-the case where whatever domain our bandit problem is over is discretized
-into some finite number $K$ points.  In common to each algorithm is the
-fact that the points are chosen randomly and uniformly from the domain.  The
-intuition behind this choice is that, otherwise, it would be relatively easy
-to construct a reward function that any discretization would do terribly
-for, simply by ensuring that the peaks of the reward function did not occur
-where the algorithm picked a point.  For example, if arms were chosen in
-regular intervals from the interval [0,1], i.e. at the points 
-$\frac{i}{K+1}$, with $1 \leq i \leq K$, then a reward function with a
-sharp peak at 0 would be guaranteed to make any discretization algorithm
-perform poorly.  Choosing the arms at random at least guarantees that there
-is a chance of doing well.  A brief description of the particulars of 
-each algorithm is now given.
+To test the $\mathcal{X}$-armed and Zooming algorithms, we have
+implemented the $\epsilon$-greedy, UCB1 \cite{auer2002finite}, and
+Exp3 \cite{auer1995gambling} finite-armed algorithms for the case
+where whatever domain our bandit problem is over is discretized into
+some finite number $K$ points.  In common to each algorithm is the
+fact that the points are chosen randomly and uniformly from the
+domain.  The intuition behind this choice is that, otherwise, it would
+be relatively easy to construct a reward function that any
+discretization would do terribly for, simply by ensuring that the
+peaks of the reward function did not occur where the algorithm picked
+a point.  For example, if arms were chosen in regular intervals from
+the interval [0,1], i.e. at the points $\frac{i}{K+1}$, with $1 \leq i
+\leq K$, then a reward function with a sharp peak at 0 would be
+guaranteed to make any discretization algorithm perform poorly.
+Choosing the arms at random at least guarantees that there is a chance
+of doing well.  A brief description of the particulars of each
+algorithm is now given.
 
 \subsubsection{$\epsilon$-Greedy}
 In round $t$, if $1 \leq t \leq K$ then play arm $t$.  Otherwise, play
 randomly with probability $\epsilon$ and the arm with the best running
-average otherwise.  We have implemented this algorithm using
-$\epsilon = \frac{K}{t}$.
+average otherwise.  We have implemented this algorithm using $\epsilon
+= \frac{K}{t}$.
 
 \subsubsection{UCB1}
 In round $t$, if $1 \leq i \leq K$ then play arm $i$.  Otherwise, play

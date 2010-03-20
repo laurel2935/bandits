@@ -52,7 +52,7 @@ public class XArmRnTest {
 		 * observed.
 		 */
 		int dimension = 3;
-		XArmRn xArmRn = new XArmRn(dimension);
+		XArmRn xArmRn = new XArmRn(dimension,0.01);
 		int numIterations = 1000;
 		for(int i=0; i<numIterations; ++i){
 			RealVector choice = xArmRn.makeChoice();
