@@ -9,9 +9,10 @@ this parameter is simply a real number in some range.  In both cases,
 evaluating a reward function can be quite costly, and as we have limited
 feedback, this is a bandit problem.  However, the standard finite-armed
 bandit algorithms are not suitable when there are an infinite number of
-possible arms to choose.
+possible arms to choose, and so we must turn to other methods in order to
+solve these problems.
 
-One way to make them handle the infinite-armed
+One way to handle the infinite-armed
 case is to simply discretize whatever domain our bandit problem is over
 into some finite number of points, then run a standard finite-armed bandit
 algorithm on those points.  However, this does not account for any
