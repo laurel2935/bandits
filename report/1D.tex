@@ -13,7 +13,7 @@ function $r(x) = x$ over the unit interval [0,1].
   \end{center}
 \end{figure}
 
-From figure \ref{fig:1dsimple}, we can see a number of facts.  First, at 
+From \figref{fig:1dsimple}, we can see a number of facts.  First, at 
 least in this case, the $\epsilon$-greedy algorithm is clearly the
 best of all discretization algorithms, which is due to there being
 no noise.  The $\mathcal{X}$-armed algorithm also does rather well,
@@ -29,7 +29,7 @@ Now we shall add some noise to our reward function.  The new reward
 function is $r(x) = b(n_{0,1}(x))$, where $b(x) = 1$ with probability
 $x$ and is 0 otherwise and $n_{\alpha_,\beta}(x)$ is $x$ times a random
 number uniformly drawn from the interval $[\alpha, \beta]$.  The results
-are presented in figure \ref{fig:1dnoise}
+are presented in \figref{fig:1dnoise}
 
 \begin{figure}[!ht]
   \begin{center}
@@ -75,14 +75,14 @@ problem, even just to see the results.
 
 First, we define our reward functions.  Given players 1 and 2, we define the
 reward functions $r_1(x_1, x_2)$ and $r_2(x_1, x_2)$ by
-\[
-	r_1(x_1, x_2) = \frac{1}{3} x_1 - \frac{2}{3} x_2 + \frac{2}{3}
+\begin{gather*}
+	r_1(x_1, x_2) = \frac{1}{3} x_1 - \frac{2}{3} x_2 + \frac{2}{3}\\
 	r_2(x_1, x_2) = -\frac{2}{3} x_1 + \frac{1}{3} x_2 + \frac{2}{3}
-\]
+\end{gather*}
 Note that each reward function is a plane, and that we have
 \begin{gather*}
 	(r_1(0,0), r_2(0,0)) = \left(\frac{2}{3}, \frac{2}{3}\right) \\
-	(r_1(1,0), r_2(1,0)) = (1, 1) \\
+	(r_1(1,0), r_2(1,0)) = (1, 0) \\
 	(r_1(0,1), r_2(0,1)) = (0, 1) \\
 	(r_1(1,1), r_2(1,1)) = \left(\frac{1}{3}, \frac{1}{3}\right)
 \end{gather*}
@@ -129,7 +129,7 @@ changing over time.  In particular, the $\epsilon$-greedy algorithm was
 just about always the best algorithm, the $\mathcal{X}$-armed algorithms
 performed about the same, despite the modification, and the UCB1, Exp3,
 and Zooming algorithms were all about the same.  Looking at the 5000
-round mark in Figure \ref{fig:1dsimple}, this is an exact correlation, and
+round mark in \figref{fig:1dsimple}, this is an exact correlation, and
 thus provides evidence for the hypothesis that the simple test cases
 considered probably generalize in roughly a similar fashion, given how
 different the reward function in this case was.
