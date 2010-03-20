@@ -64,3 +64,72 @@ choosing a smaller number of arms to discretize the domain into.  In fact,
 the very number of arms chosen for those algorithms is essentially a 
 parameter helping to determine how much exploration to do -- more arms
 will cause more exploration, and fewer arms will cause more exploitation.
+
+\subsubsection{Prisoner's Dilemma - Changing Reward Function}
+Here we present how the algorithms did against each other in an extension of
+the Prisoner's Dilemma to a continuous-choice case.  As we shall have the
+algorithms playing against each other, the reward function for a single
+algorithm is not constant with respect to time, and so there is no reason to
+suspect that the algorithms will still perform well, but it is an interesting
+problem, even just to see the results.
+
+First, we define our reward functions.  Given players 1 and 2, we define the
+reward functions $r_1(x_1, x_2)$ and $r_2(x_1, x_2)$ by
+\[
+	r_1(x_1, x_2) = \frac{1}{3} x_1 - \frac{2}{3} x_2 + \frac{2}{3}
+	r_2(x_1, x_2) = -\frac{2}{3} x_1 + \frac{1}{3} x_2 + \frac{2}{3}
+\]
+Note that each reward function is a plane, and that we have
+\begin{gather*}
+	(r_1(0,0), r_2(0,0)) = \left(\frac{2}{3}, \frac{2}{3}\right) \\
+	(r_1(1,0), r_2(1,0)) = (1, 1) \\
+	(r_1(0,1), r_2(0,1)) = (0, 1) \\
+	(r_1(1,1), r_2(1,1)) = \left(\frac{1}{3}, \frac{1}{3}\right)
+\end{gather*}
+which is precisely the setup in a Prisoner's Dilemma game where 0 corresponds
+to colluding and 1 corresponds to not colluding.
+
+We use 100 arms for the discretization algorithms here, and each trial is run
+through 5000 rounds.  We also introduce a modified $\mathcal{X}$-armed
+algorithm which does a random walk down its covering tree with probability .1,
+in the hopes that this will allow it to adapt to a changing reward function.
+Here we present the average rewards over those rounds, where the first element
+in a pair of numbers corresponds to the average reward for the row algorithm
+and the second number corresponds to the average reward for the column
+algorithm.  
+
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+& $\epsilon$-greedy & UCB1 & Exp3 & $\mathcal{X}$-armed &
+Modified $\mathcal{X}$-armed & Zooming \\ \hline
+$\epsilon$-greedy & .44, .39 & .60, .25 & .55, .27 & .47, .31 & .49, .35 &
+.58, .25\\ \hline
+UCB1 & & .48, .46 & .48, .46 & .37, .52 & .37, .49  & .46, .48 \\ \hline
+Exp3 & & & .47, .44 & .36, .52 & .39, .46 & .48, .44 \\ \hline
+$\mathcal{X}$-armed & & & & .59, .59 & .48, .49 & .53, .34 \\ \hline
+Modified $\mathcal{X}$-armed & & & & & .50, .50 & .52, .35 \\ \hline
+Zooming & & & & & & .53, .53 \\ \hline
+\end{tabular}
+
+As a sidenote, the algorithms that tended to do too much exploring in the
+simple case of $r(x)=x$ tended to have the least convergence to an arm.
+On the other hand, the $\epsilon$-greedy algorithm was relatively
+convergent, almost always to relatively high values, which corresponds to
+not colluding in the game and is the dominant strategy.  Also, the
+deterministic algorithms, when run against themselves, obviously performed
+identically to one another.  In particular, this causes the
+$\mathcal{X}$-armed algorithm to always think that colluding is better, and
+hence that matchup has the highest average rewards.
+Now we shall examine the numbers.
+
+Roughly speaking, the algorithms performed just about in the same order of
+their performance on the simple $r(x)=x$ case.  This is somewhat surprising,
+given that this reward function is not only slightly more complicated, but
+changing over time.  In particular, the $\epsilon$-greedy algorithm was
+just about always the best algorithm, the $\mathcal{X}$-armed algorithms
+performed about the same, despite the modification, and the UCB1, Exp3,
+and Zooming algorithms were all about the same.  Looking at the 5000
+round mark in Figure \ref{fig:1dsimple}, this is an exact correlation, and
+thus provides evidence for the hypothesis that the simple test cases
+considered probably generalize in roughly a similar fashion, given how
+different the reward function in this case was.
