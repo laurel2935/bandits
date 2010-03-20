@@ -1,12 +1,6 @@
 \section{Algorithms}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \subsection{Hierarchical Optimistic Optimization Algorithm}
-% introduction and summary
-% description of covering tree
-% summarized pseudo code of the HOO algorithm
-% discussion of regret bounds
-% implementation notes.
 
 The Hierarchical Optimistic Optimization (HOO) algorithm is a
 no-regret algorithm for the case when the ``arms'' form a generic
@@ -37,12 +31,12 @@ as $\cP_{h,i}$.
 
 The covering tree is required to satisfy two properties:
 \begin{align*}
-  \cP_{(1,0} &= \cX\\
+  \cP_{0,1} &= \cX\\
   \cP_{h,i} &= \cP_{h+1,2i-1} \cup \cP_{h+1,2i}
 \end{align*}
 
 It is assumed that $\cX$ has a dissimilarity measure
-$l(\cdot,\cdot)$. The diameter of a subset $A \subseteq \cX$ is
+$l(\cdot,\cdot)$. The \emph{diameter} of a subset $A \subseteq \cX$ is
 defined as $\sup_{x,y \in A}l(x,y)$. It is further assumed that there
 are values $\rho < 1$, $\nu_1, \nu_2 > 0$ s.t. for all integers $h
 \geq 0$ and $i = 1,2, \dots, 2^h$, the diameter of $\cP_{h,i}$ is at
@@ -205,13 +199,13 @@ index, defined as $I_t(v):=\mu_t(v)+2*r_t(v)$
   \end{center}
 \end{figure}
 
-Inbetween different phases, the Zooming Algorithm does not carry over
+In between different phases, the Zooming Algorithm does not carry over
 information. All that changes is $i_{ph}$. As $i_{ph}$ increases, the
 index is effected increasingly more by how many times an arm has been
 played. This means that earlier rounds have indices that are more
 influenced by the $\mu_t(v)$, and will thus tend to exploit their
 earlier finds more, while later rounds will perform more exploration
-before zeroing in on the optimal arm. Given specific knowlege about
+before zeroing in on the optimal arm. Given specific knowledge about
 the problem at hand, this value could be optimized, allowing you to
 run the zooming algorithm for a specific phase number.
 
@@ -233,9 +227,10 @@ run the zooming algorithm for a specific phase number.
 
 
 The runtime of the Zooming Algorithm depends very heavily on how the
-covering oracle chosen behaves. This can be problematic, since the problem
-is np-complete for the problem of hypercube coverings  \cite{Hoffmann05acovering} . In high dimensions,
-the oracle can become quite expensive.
+covering oracle chosen behaves. This can be problematic, since the
+problem is \NP-complete for the problem of hypercube coverings
+\cite{Hoffmann05acovering} . In high dimensions, the oracle can become
+quite expensive.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Discretization Algorithms}
@@ -269,9 +264,10 @@ the arm that maximizes the quantity
 \[
 	\bar{r_i} + \sigma \sqrt{\frac{2 \log(t)}{p_i}}
 \]
-Where $\bar{r_i}$ is the average reward of arm $i$ so far, $p_i$ is the 
-number of times arm $i$ has been played so far, and $\sigma$ is a parameter
-that can be chosen to influence how much exploration is done.
+Where $\bar{r_i}$ is the average reward of arm $i$ so far, $p_i$ is
+the number of times arm $i$ has been played so far, and $\sigma$ is a
+parameter that can be chosen to influence how much exploration is
+done.
 
 \subsubsection{Exp3}
 Initialize $w_i(1) = 1$ for all $1 \leq i \leq K$.  In round $t$, play
@@ -283,7 +279,7 @@ With $i$ the arm that was played, update
 \[
 	w_i(t+1) = w_i(t)\gamma^{\frac{\epsilon r_i(t)}{K p_i(t)}}
 \]
-where $r_i(t)$ is the reward recieved, and set $w_j(t+1) = w_j(t)$ for all
-other arms $j$.  $\gamma$ is a parameter that can be chosen to influence how
-much exploration is done.  As in the $\epsilon$-greedy algorithm, we use
-$\epsilon = \frac{K}{t}$.
+where $r_i(t)$ is the reward received, and set $w_j(t+1) = w_j(t)$ for
+all other arms $j$.  $\gamma$ is a parameter that can be chosen to
+influence how much exploration is done.  As in the $\epsilon$-greedy
+algorithm, we use $\epsilon = \frac{K}{t}$.
