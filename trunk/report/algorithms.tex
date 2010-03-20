@@ -28,11 +28,12 @@ nodes along the path from chosen leaf to root. The regret bounds of
 the algorithm are in terms of a local smoothness property at the
 maxima of the mean-reward function $f$.
 
-\subsubsection{Covering Tree}
+\subsubsection{Covering Tree}\label{sss:coverTree}
 The HOO algorithm requires an infinite binary tree where each node
-represents a subset of $\cX$. We denote the $i^{th}$ node at level $h$
-as $(h,i)$, and its two children as $(h+1, 2i-1)$ and $(h+1, 2i)$. The
-subset of $\cX$ associated with node $(h,i)$ is denoted as $\cP_{(h,i)}$.
+represents a subset of $\cX$. We denote the $i^{th}$ node at level
+$h$ as $(h,i)$, and its two children as $(h+1, 2i-1)$ and $(h+1,
+2i)$. The subset of $\cX$ associated with node $(h,i)$ is denoted
+as $\cP_{(h,i)}$.
 
 The covering tree is required to satisfy two properties:
 \begin{align*}
@@ -40,54 +41,73 @@ The covering tree is required to satisfy two properties:
   \cP_({h,i}) &= \cP_({h+1,2i-1}) \cup \cP_({h+1,2i})
 \end{align*}
 
+TODO: Can talk about diameters, and size of coverings here.
+
 \subsubsection{HOO Algorithm}
+The HOO algorithm operates by maintaining a collection of subsets
+which cover the space $\cX$, along with an upper bound of the expected
+reward of points in each subset that holds in high probability. These
+subsets are maintained in the covering tree. Each time an arm is
+selected, a new and finer subset is added to the covering tree. Arms
+are selected by optimistically ``zeroing in'' on regions of high
+expected reward. In this way, the tree develops fine granularity
+around subsets of $\cX$ with high expected reward, and coarse
+granularity around subsets of $\cX$ with low expected reward.
+
+%% The HOO algorithm works in two parts. First, to select an arm, a
+%% downward pass is made through the covering tree until a leaf is
+%% reached. An arm $x \in \cP_{leaf}$ is selected, and a reward is
+%% received.. In the second part of the algorithm, an upward pass from
+%% leaf to root is made. The values of all nodes along this path are u
 
 \begin{algorithm}
   \SetKwData{Left}{left}\SetKwData{This}{this}\SetKwData{Up}{up}
   \SetKwFunction{Union}{Union}\SetKwFunction{FindCompress}{FindCompress}
   \SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
-  \Input{A covering tree}
-  \Output{Sequence of no regret choices}
-  \BlankLine
   %initialization
-  $ \cT \leftarrow \{ (0,1) \}$\;
+  %$ \cT \leftarrow \{ (0,1) \}$\;
   %$B_{1,2} \leftarrow \infty$ \;
   %$B_{2,2} \leftarrow \infty$ \;
   \For{$i=1,2,\dots$}{
-    % descend the tree
-    currentNode $\leftarrow$ root\;
-    \While{currentNode has been instantiated}{
-      $B_{left} \leftarrow$ Bvalue(leftChild(currentNode))\;
-      $B_{right} \leftarrow$ Bvalue(rightChild(currentNode))\;
-      \uIf{$B_{left} > B_{right}$}{
-        currentNode $\leftarrow$ leftChild(currentNode)\;
-      }
-      \Else{
-        currentNode $\leftarrow$ rightChild(currentNode)\;
-      }
-    }
-    instantiate currentNode\;
-    Choose arm $x$ in $\cP_{currentNode}$ and play it\;
-    Receive reward $Y$\;
-    $\cT \leftarrow \cT \cup$ currentNode \;
-    \ForAll{$(h,i) \in$ pathToRoot(currentNode)}{
-      $T_{h,i} \leftarrow T_{h,i} + 1$\;
-      $\hat{\mu}_{h,i} \leftarrow (1 - \frac{1}{T_{h,i}})
-      \hat{\mu}_{h,i} + \frac{Y}{T_{h,i}}$\;
-    }
-    \ForAll{$(h,i) \in$ pathToRoot(currentNode)}{
-      $U_{h,i} \leftarrow \hat{\mu}_{h,i} + \sqrt{(2 \ln n) / T_{h,i}}
-      + \nu_1 \rho^{h}$\;
-    }
+    leaf $\leftarrow$ descendToLeaf(root)\;
+    %currentNode $\leftarrow$ root\;
+    %% \While{currentNode has been instantiated}{
+    %%   $B_{left} \leftarrow$ Bvalue(leftChild(currentNode))\;
+    %%   $B_{right} \leftarrow$ Bvalue(rightChild(currentNode))\;
+    %%   \uIf{$B_{left} > B_{right}$}{
+    %%     currentNode $\leftarrow$ leftChild(currentNode)\;
+    %%   }
+    %%   \Else{
+    %%     currentNode $\leftarrow$ rightChild(currentNode)\;
+    %%   }
+    %% }
+    %instantiate currentNode\;
+    %Choose arm $x$ in $\cP_{currentNode}$ and play it\;
+    arm $\leftarrow$ chooseArm(leaf)\;
+    $Y \leftarrow$ getReward(arm)\;
+    %Choose arm $x$ in $\cP_{leaf}$ and play it\;
+    %Receive reward $Y$\;
+    %$\cT \leftarrow \cT \cup$ currentNode \;
+    updateValues(leaf)\;
+    %Update values on path from leaf to root\;
+    %% \ForAll{$(h,i) \in$ pathToRoot(currentNode)}{
+    %%   $T_{h,i} \leftarrow T_{h,i} + 1$\;
+    %%   $\hat{\mu}_{h,i} \leftarrow (1 - \frac{1}{T_{h,i}})
+    %%   \hat{\mu}_{h,i} + \frac{Y}{T_{h,i}}$\;
+    %% }
+    %% \ForAll{$(h,i) \in$ pathToRoot(currentNode)}{
+    %%   $U_{h,i} \leftarrow \hat{\mu}_{h,i} + \sqrt{(2 \ln n) / T_{h,i}}
+    %%   + \nu_1 \rho^{h}$\;
+    %% }
     %$B_{H+1, 2I-1} \leftarrow \infty$\;
     %$B_{H+1, 2I} \leftarrow -\infty$\;
     %$\cT' \leftarrow \cT$\;
-    \While{$\cT' \neq \{ (0,1) \}$}{
-      $(h,i) \leftarrow$ {\sc leaf}$(\cT')$\;
-      $B_{h,i} \leftarrow \min \{ U_{h,i}, \max B_{h+1,
-            2i-1},B_{h+1, 2i}  \}$ \;
-      $\cT' \leftarrow \cT' \setminus \{ (h,i) \} $ \;
-    }
+    %% \While{$\cT' \neq \{ (0,1) \}$}{
+    %%   $(h,i) \leftarrow$ {\sc leaf}$(\cT')$\;
+    %%   $B_{h,i} \leftarrow \min \{ U_{h,i}, \max B_{h+1,
+    %%         2i-1},B_{h+1, 2i}  \}$ \;
+    %%   $\cT' \leftarrow \cT' \setminus \{ (h,i) \} $ \;
+    %% }
   }
   \caption{Hierarchical Optimistic Optimization}\label{alg:hooShort}
 \end{algorithm}
@@ -108,15 +128,25 @@ $\forall \; x,y \in \cX$,
 \begin{equation*}
   f^* - f(y) \leq f^* - f(x) + \max \{f^* - f(x), l(x,y) \}
 \end{equation*}
-for some dissimilarity function $l(\cdot, \cdot)$. Note that this
-amounts to requiring (one-sided) Lipschitzness at the maxmia, while
-only requiring a looser condition at other points. The further a point
-is from the maxima, the looser is the requirement on smoothness.
+for some dissimilarity function $l(\cdot, \cdot)$. Such a function is
+called \emph{weakly Lipschitz}. Note that this amounts to requiring
+(one-sided) Lipschitzness at the maxima, while only requiring a looser
+condition at other points. The further a point is from the maxima, the
+looser is the requirement on smoothness.
+
+
 
 \subsubsection{Implementation}
-need to ``construct a recursive covering of the space of arms in such
-a way that the diameters of the sets in the covering shrink at a known
-geometric rate when measured with this dissimilarity.''
+The primary component of the implementation is the cover tree. When
+$\cX$ is an n-dimensional rectangle in $\reals^n$, the covering tree
+can be implemented as a binary tree in which each node represents a
+rectangular region, and where the two children of each node are
+defined by splitting their parent's region along some coordinate axis
+(e.g., splitting the longest side). Incidentally, this is known as a
+$kD$-tree data structure. While this is sufficient for such spaces as
+the unit hypercube, it is also sufficient for several other spaces
+which can be defined by points in a unit hypercube, such as an
+n-dimensional sphere (in polar coordinates) or torus.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Zooming Algorithm}
