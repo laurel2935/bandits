@@ -55,8 +55,12 @@ playing against a random player, with reward 1 if the AI wins, .5 if the
 game results in a tie, and 0 if the AI loses.  The player who makes the
 first move in the game is decided at random.  Note that this reward 
 function is piecewise constant, with noise, and that the arms live in
-$\mathbb{R}^9$, a high-dimensional space.  Now we examine how the
-algorithms did.
+$\mathbb{R}^9$, a high-dimensional space.  As it is somewhat unclear
+how well the best possible Tic-Tac-Toe AI would do, we define `regret'
+in this scenario as simply $1-\text{reward}$, even though average regret
+obviously can never approach zero.  As a reference point, one AI that never
+loses (although it does not necessarily mazimize reward), achieves regret of
+about .14 under this metric.  Now we examine how the algorithms did.
 
 \begin{figure}[!ht]
   \begin{center}
