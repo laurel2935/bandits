@@ -1,29 +1,32 @@
 \section{Algorithms}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \subsection{Hierarchical Optimistic Optimization Algorithm}
+% introduction and summary
+% description of covering tree
+% summarized pseudo code of the HOO algorithm
+% discussion of regret bounds
+% implementation notes.
 
-``a dissimilarity function is assumed to locally set a bound on the
-decrease of the function in the vicinity of each of its global
-maxima.''
-
-need to ``construct a recursive covering of the space of arms in such
-a way that the diameters of the sets in the covering shrink at a known
-geometric rate when measured with this dissimilarity.''
-
-``does not assume a global property such as Lipschitzness in the whole
-space.''
-
-Applies when arms are a generic measurable space. Each arm needs to
-have a distribution of rewards, with finite support.
-
-Much like the UCB algorithm, the HOO algorithm seeks to accurately
-estimate the reward function where it has high value, while loosely
-estimating the reward function where it has low value. This is
-accomplished by incrementally building a covering of the space $\cX$
-with fine subdivisions where rewards are high, and coarse subdivisions
+The Hierarchical Optimistic Optimization (HOO) algorithm is a
+no-regret algorithm for the case when the ``arms'' form a generic
+measurable space $\cX$, and when each arm $x \in \cX$ is associated
+with a fixed distribution $f(x)$ of rewards with finite support. Much
+like the UCB algorithm, the HOO algorithm seeks to accurately estimate
+the reward function where it has high value, while loosely estimating
+the reward function where it has low value. This is accomplished by
+incrementally building a covering of the space $\cX$ with fine
+subdivisions where rewards are high, and coarse subdivisions
 elsewhere. These coverings are maintained in a tree data structure
 called a \emph{covering tree}. In the covering tree, the root covers
-all of $\cX$; other nodes represent finer subsets of $\cX$.
+all of $\cX$; other nodes represent finer subsets of $\cX$. A
+deterministic rule based on values stored at each node of the tree is
+used to descend the tree until a leaf is reached. This leaf represents
+a subset of $\cX$ from which to (arbitrarily) select the next arm. The
+reward for that arm is used to update the values associated with all
+nodes along the path from chosen leaf to root. The regret bounds of
+the algorithm are in terms of a local smoothness property at the
+maxima of the mean-reward function $f$.
 
 \subsubsection{Covering Tree}
 The HOO algorithm requires an infinite binary tree where each node
@@ -36,6 +39,7 @@ is required to satisfy two properties:
   v_{h,i} &= \text{left child of } v_{h,i} \cup \text{right child of} v_{h,i}
 \end{align*}
 
+\subsubsection{HOO Algorithm}
 Full pseudo-code is given in \algref{alg:hoo}.
 
 ``Node selection works by comparing $B$-values and always choosing the
@@ -46,7 +50,21 @@ node with the highest $B$-value.''
     and its descendants.}\\
 \end{align*}
 
+\subsubsection{Regret Bounds}
+The mean-payoff function $f$ is assumed to satisfy the condition that
+$\forall \; x,y \in \cX$,
+\begin{equation*}
+  f^* - f(y) \leq f^* - f(x) + \max \{f^* - f(x), l(x,y) \}
+\end{equation*}
+for some dissimilarity function $l(\cdot, \cdot)$. Note that this
+amounts to requiring (one-sided) Lipschitzness at the maxmia, while
+only requiring a looser condition at other points. The further a point
+is from the maxima, the looser is the requirement on smoothness.
 
+\subsubsection{Implementation}
+need to ``construct a recursive covering of the space of arms in such
+a way that the diameters of the sets in the covering shrink at a known
+geometric rate when measured with this dissimilarity.''
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Zooming Algorithm}
